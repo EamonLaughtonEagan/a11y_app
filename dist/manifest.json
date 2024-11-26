@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "Boilerplate",
-    "description": "My ReactJS Boilerplate",
+    "name": "Accessibility Assistant",
+    "description": "Accessiblity tool that leverages AI to provide suggestions for improving the accessibility of web pages.",
     "version": "1.0.0",
     "icons": {
         "16": "icon.png",
@@ -9,7 +9,7 @@
         "128": "icon.png"
     },
     "action": {
-        "default_title": "Click Me!",
+        "default_title": "Accessibility Assistant",
         "default_popup": "popup.html"
     },
     "options_page": "options.html",

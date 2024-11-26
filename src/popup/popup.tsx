@@ -138,7 +138,7 @@ const Popup = () => {
 
     return (
         <div className='flex flex-col w-full h-screen'>
-            <nav className='fixed top-0 left-0 right-0 flex justify-between items-center p-4 bg-gray-900 text-black shadow-md'>
+            <nav className='fixed top-0 left-0 right-0 flex justify-around items-center p-4 bg-gray-900 text-black shadow-md'>
                 <div className='flex space-x-1'>
                     <Button onClick={handleClick} className='px-4 bg-gray-400 hover:bg-gray-500 rounded'>
                         View Violations
@@ -154,14 +154,6 @@ const Popup = () => {
                     </Button>
                 </div>
             </nav>
-            {/* <div className='space-x-1 flex justify-between'>
-                <Button onClick={handleClick}>
-                    View Violations
-                </Button>
-                <Button onClick={handleClearViolations}>
-                    Clear Violations
-                </Button>
-            </div> */}
             <div className='mt-24 mb-4'>
                 {generatingViolations ? <div className='flex items-center justify-center space-x-2'>
                     <svg className='animate-spin h-5 w-5 text-blue-500' 
@@ -190,14 +182,6 @@ const Popup = () => {
                     ))}
                 </ul>}
             </div>
-            {/* <div className='space-x-1 flex justify-between'>
-                <Button onClick={getSuggestions} disabled={violations.length === 0}>
-                    Generate Suggestions
-                </Button>
-                <Button onClick={handleClearChatLog}>
-                    Clear Chat
-                </Button>
-            </div> */}
             <ChatLog chatLog={chatLog} loading={loading}/>
             <div className='sticky bottom-0 left-0 right-0 justify-center items-center flex h-12'>
                 <form onSubmit={handleSubmit} className='flex justify-center w-full'>
