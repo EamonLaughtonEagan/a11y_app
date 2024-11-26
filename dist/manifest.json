@@ -1,0 +1,31 @@
+{
+    "manifest_version": 3,
+    "name": "Boilerplate",
+    "description": "My ReactJS Boilerplate",
+    "version": "1.0.0",
+    "icons": {
+        "16": "icon.png",
+        "48": "icon.png",
+        "128": "icon.png"
+    },
+    "action": {
+        "default_title": "Click Me!",
+        "default_popup": "popup.html"
+    },
+    "options_page": "options.html",
+    "content_scripts": [
+        {
+            "js": ["contentScript.js"],
+            "matches": ["https://developer.chrome.com/docs/extensions/*"]
+        }
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": [
+        "tabs",
+        "activeTab",
+        "scripting",
+        "storage"
+    ]
+}
