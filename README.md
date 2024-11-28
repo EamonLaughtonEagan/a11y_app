@@ -15,3 +15,9 @@ Development:
 2. run "npm run dev"
 
 Production:
+
+How to access extension from web browser
+1. go to chrome://extensions
+2. enable the developer mode toggle
+3. click the load unpacked button
+4. transfer the /dist folder found in the root directory
