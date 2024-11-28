@@ -15,6 +15,7 @@ Development:
 2. run "npm run dev"
 
 Production:
+...
 
 How to access extension from web browser
 1. go to chrome://extensions
