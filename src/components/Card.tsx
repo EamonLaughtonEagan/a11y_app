@@ -16,13 +16,17 @@ const getImpactColour = (impact) => {
     }
 }
 
+const handleScrollToViolation = (index: number) => {
+    chrome.runtime.sendMessage({ message: 'scrollToViolation', index: index });
+}
+
 const Card = ({ violation, index }) => {
     return (
         <li className='flex justify-between border-b border-gray-600 py-2'>
             <div className='flex items-start'>
                 <h1>{index+1}</h1>
                 <div className='px-2'>
-                    <p className='font-bold'>{violation.description}</p>
+                    <p className='font-bold w-fit cursor-pointer' onClick={() => handleScrollToViolation(index)}>{violation.description}</p>
                     <p>{violation.help}</p>
                     <a 
                         className='text-blue-400' 

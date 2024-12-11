@@ -1,1 +1,523 @@
-(()=>{"use strict";var n,e={702:(n,e,t)=>{t.d(e,{A:()=>s});var o=t(601),r=t.n(o),a=t(314),i=t.n(a)()(r());i.push([n.id,"*, ::before, ::after {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n  --tw-contain-size:  ;\n  --tw-contain-layout:  ;\n  --tw-contain-paint:  ;\n  --tw-contain-style:  ;\n}\n\n::backdrop {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n  --tw-contain-size:  ;\n  --tw-contain-layout:  ;\n  --tw-contain-paint:  ;\n  --tw-contain-style:  ;\n}/*\n! tailwindcss v3.4.13 | MIT License | https://tailwindcss.com\n*//*\n1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)\n2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)\n*/\n\n*,\n::before,\n::after {\n  box-sizing: border-box; /* 1 */\n  border-width: 0; /* 2 */\n  border-style: solid; /* 2 */\n  border-color: #e5e7eb; /* 2 */\n}\n\n::before,\n::after {\n  --tw-content: '';\n}\n\n/*\n1. Use a consistent sensible line-height in all browsers.\n2. Prevent adjustments of font size after orientation changes in iOS.\n3. Use a more readable tab size.\n4. Use the user's configured `sans` font-family by default.\n5. Use the user's configured `sans` font-feature-settings by default.\n6. Use the user's configured `sans` font-variation-settings by default.\n7. Disable tap highlights on iOS\n*/\n\nhtml,\n:host {\n  line-height: 1.5; /* 1 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n  -moz-tab-size: 4; /* 3 */\n  -o-tab-size: 4;\n     tab-size: 4; /* 3 */\n  font-family: ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"; /* 4 */\n  font-feature-settings: normal; /* 5 */\n  font-variation-settings: normal; /* 6 */\n  -webkit-tap-highlight-color: transparent; /* 7 */\n}\n\n/*\n1. Remove the margin in all browsers.\n2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.\n*/\n\nbody {\n  margin: 0; /* 1 */\n  line-height: inherit; /* 2 */\n}\n\n/*\n1. Add the correct height in Firefox.\n2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)\n3. Ensure horizontal rules are visible by default.\n*/\n\nhr {\n  height: 0; /* 1 */\n  color: inherit; /* 2 */\n  border-top-width: 1px; /* 3 */\n}\n\n/*\nAdd the correct text decoration in Chrome, Edge, and Safari.\n*/\n\nabbr:where([title]) {\n  -webkit-text-decoration: underline dotted;\n          text-decoration: underline dotted;\n}\n\n/*\nRemove the default font size and weight for headings.\n*/\n\nh1,\nh2,\nh3,\nh4,\nh5,\nh6 {\n  font-size: inherit;\n  font-weight: inherit;\n}\n\n/*\nReset links to optimize for opt-in styling instead of opt-out.\n*/\n\na {\n  color: inherit;\n  text-decoration: inherit;\n}\n\n/*\nAdd the correct font weight in Edge and Safari.\n*/\n\nb,\nstrong {\n  font-weight: bolder;\n}\n\n/*\n1. Use the user's configured `mono` font-family by default.\n2. Use the user's configured `mono` font-feature-settings by default.\n3. Use the user's configured `mono` font-variation-settings by default.\n4. Correct the odd `em` font sizing in all browsers.\n*/\n\ncode,\nkbd,\nsamp,\npre {\n  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace; /* 1 */\n  font-feature-settings: normal; /* 2 */\n  font-variation-settings: normal; /* 3 */\n  font-size: 1em; /* 4 */\n}\n\n/*\nAdd the correct font size in all browsers.\n*/\n\nsmall {\n  font-size: 80%;\n}\n\n/*\nPrevent `sub` and `sup` elements from affecting the line height in all browsers.\n*/\n\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -0.25em;\n}\n\nsup {\n  top: -0.5em;\n}\n\n/*\n1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)\n2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)\n3. Remove gaps between table borders by default.\n*/\n\ntable {\n  text-indent: 0; /* 1 */\n  border-color: inherit; /* 2 */\n  border-collapse: collapse; /* 3 */\n}\n\n/*\n1. Change the font styles in all browsers.\n2. Remove the margin in Firefox and Safari.\n3. Remove default padding in all browsers.\n*/\n\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit; /* 1 */\n  font-feature-settings: inherit; /* 1 */\n  font-variation-settings: inherit; /* 1 */\n  font-size: 100%; /* 1 */\n  font-weight: inherit; /* 1 */\n  line-height: inherit; /* 1 */\n  letter-spacing: inherit; /* 1 */\n  color: inherit; /* 1 */\n  margin: 0; /* 2 */\n  padding: 0; /* 3 */\n}\n\n/*\nRemove the inheritance of text transform in Edge and Firefox.\n*/\n\nbutton,\nselect {\n  text-transform: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Remove default button styles.\n*/\n\nbutton,\ninput:where([type='button']),\ninput:where([type='reset']),\ninput:where([type='submit']) {\n  -webkit-appearance: button; /* 1 */\n  background-color: transparent; /* 2 */\n  background-image: none; /* 2 */\n}\n\n/*\nUse the modern Firefox focus style for all focusable elements.\n*/\n\n:-moz-focusring {\n  outline: auto;\n}\n\n/*\nRemove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)\n*/\n\n:-moz-ui-invalid {\n  box-shadow: none;\n}\n\n/*\nAdd the correct vertical alignment in Chrome and Firefox.\n*/\n\nprogress {\n  vertical-align: baseline;\n}\n\n/*\nCorrect the cursor style of increment and decrement buttons in Safari.\n*/\n\n::-webkit-inner-spin-button,\n::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/*\n1. Correct the odd appearance in Chrome and Safari.\n2. Correct the outline style in Safari.\n*/\n\n[type='search'] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}\n\n/*\nRemove the inner padding in Chrome and Safari on macOS.\n*/\n\n::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Change font properties to `inherit` in Safari.\n*/\n\n::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}\n\n/*\nAdd the correct display in Chrome and Safari.\n*/\n\nsummary {\n  display: list-item;\n}\n\n/*\nRemoves the default spacing and border for appropriate elements.\n*/\n\nblockquote,\ndl,\ndd,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\nhr,\nfigure,\np,\npre {\n  margin: 0;\n}\n\nfieldset {\n  margin: 0;\n  padding: 0;\n}\n\nlegend {\n  padding: 0;\n}\n\nol,\nul,\nmenu {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n\n/*\nReset default styling for dialogs.\n*/\ndialog {\n  padding: 0;\n}\n\n/*\nPrevent resizing textareas horizontally by default.\n*/\n\ntextarea {\n  resize: vertical;\n}\n\n/*\n1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)\n2. Set the default placeholder color to the user's configured gray 400 color.\n*/\n\ninput::-moz-placeholder, textarea::-moz-placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\ninput::placeholder,\ntextarea::placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\n/*\nSet the default cursor for buttons.\n*/\n\nbutton,\n[role=\"button\"] {\n  cursor: pointer;\n}\n\n/*\nMake sure disabled buttons don't get the pointer cursor.\n*/\n:disabled {\n  cursor: default;\n}\n\n/*\n1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)\n2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)\n   This can trigger a poorly considered lint error in some tools but is included by design.\n*/\n\nimg,\nsvg,\nvideo,\ncanvas,\naudio,\niframe,\nembed,\nobject {\n  display: block; /* 1 */\n  vertical-align: middle; /* 2 */\n}\n\n/*\nConstrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)\n*/\n\nimg,\nvideo {\n  max-width: 100%;\n  height: auto;\n}\n\n/* Make elements with the HTML hidden attribute stay hidden by default */\n[hidden] {\n  display: none;\n}\n.container {\n  width: 100%;\n}\n@media (min-width: 640px) {\n\n  .container {\n    max-width: 640px;\n  }\n}\n@media (min-width: 768px) {\n\n  .container {\n    max-width: 768px;\n  }\n}\n@media (min-width: 1024px) {\n\n  .container {\n    max-width: 1024px;\n  }\n}\n@media (min-width: 1280px) {\n\n  .container {\n    max-width: 1280px;\n  }\n}\n@media (min-width: 1536px) {\n\n  .container {\n    max-width: 1536px;\n  }\n}\n.visible {\n  visibility: visible;\n}\n.collapse {\n  visibility: collapse;\n}\n.static {\n  position: static;\n}\n.fixed {\n  position: fixed;\n}\n.absolute {\n  position: absolute;\n}\n.relative {\n  position: relative;\n}\n.sticky {\n  position: sticky;\n}\n.bottom-0 {\n  bottom: 0px;\n}\n.left-0 {\n  left: 0px;\n}\n.right-0 {\n  right: 0px;\n}\n.top-0 {\n  top: 0px;\n}\n.top-10 {\n  top: 2.5rem;\n}\n.isolate {\n  isolation: isolate;\n}\n.mx-2 {\n  margin-left: 0.5rem;\n  margin-right: 0.5rem;\n}\n.mx-auto {\n  margin-left: auto;\n  margin-right: auto;\n}\n.mb-4 {\n  margin-bottom: 1rem;\n}\n.mt-24 {\n  margin-top: 6rem;\n}\n.block {\n  display: block;\n}\n.inline-block {\n  display: inline-block;\n}\n.inline {\n  display: inline;\n}\n.flex {\n  display: flex;\n}\n.inline-flex {\n  display: inline-flex;\n}\n.table {\n  display: table;\n}\n.grid {\n  display: grid;\n}\n.inline-grid {\n  display: inline-grid;\n}\n.contents {\n  display: contents;\n}\n.list-item {\n  display: list-item;\n}\n.hidden {\n  display: none;\n}\n.h-12 {\n  height: 3rem;\n}\n.h-5 {\n  height: 1.25rem;\n}\n.h-min {\n  height: -moz-min-content;\n  height: min-content;\n}\n.h-screen {\n  height: 100vh;\n}\n.w-3\\/4 {\n  width: 75%;\n}\n.w-5 {\n  width: 1.25rem;\n}\n.w-fit {\n  width: -moz-fit-content;\n  width: fit-content;\n}\n.w-full {\n  width: 100%;\n}\n.transform {\n  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));\n}\n@keyframes spin {\n\n  to {\n    transform: rotate(360deg);\n  }\n}\n.animate-spin {\n  animation: spin 1s linear infinite;\n}\n.flex-col {\n  flex-direction: column;\n}\n.items-start {\n  align-items: flex-start;\n}\n.items-end {\n  align-items: flex-end;\n}\n.items-center {\n  align-items: center;\n}\n.justify-start {\n  justify-content: flex-start;\n}\n.justify-center {\n  justify-content: center;\n}\n.justify-between {\n  justify-content: space-between;\n}\n.justify-around {\n  justify-content: space-around;\n}\n.space-x-1 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-x-reverse: 0;\n  margin-right: calc(0.25rem * var(--tw-space-x-reverse));\n  margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));\n}\n.space-x-2 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-x-reverse: 0;\n  margin-right: calc(0.5rem * var(--tw-space-x-reverse));\n  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));\n}\n.space-y-4 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-y-reverse: 0;\n  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));\n  margin-bottom: calc(1rem * var(--tw-space-y-reverse));\n}\n.rounded {\n  border-radius: 0.25rem;\n}\n.rounded-2xl {\n  border-radius: 1rem;\n}\n.rounded-md {\n  border-radius: 0.375rem;\n}\n.border {\n  border-width: 1px;\n}\n.border-2 {\n  border-width: 2px;\n}\n.border-b {\n  border-bottom-width: 1px;\n}\n.border-gray-300 {\n  --tw-border-opacity: 1;\n  border-color: rgb(209 213 219 / var(--tw-border-opacity));\n}\n.border-gray-600 {\n  --tw-border-opacity: 1;\n  border-color: rgb(75 85 99 / var(--tw-border-opacity));\n}\n.bg-blue-100 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(219 234 254 / var(--tw-bg-opacity));\n}\n.bg-gray-100 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(243 244 246 / var(--tw-bg-opacity));\n}\n.bg-gray-200 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(229 231 235 / var(--tw-bg-opacity));\n}\n.bg-gray-400 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(156 163 175 / var(--tw-bg-opacity));\n}\n.bg-gray-500 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(107 114 128 / var(--tw-bg-opacity));\n}\n.bg-gray-900 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(17 24 39 / var(--tw-bg-opacity));\n}\n.bg-orange-200 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(254 215 170 / var(--tw-bg-opacity));\n}\n.bg-red-200 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(254 202 202 / var(--tw-bg-opacity));\n}\n.bg-red-600 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(220 38 38 / var(--tw-bg-opacity));\n}\n.bg-white {\n  --tw-bg-opacity: 1;\n  background-color: rgb(255 255 255 / var(--tw-bg-opacity));\n}\n.bg-yellow-200 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(254 240 138 / var(--tw-bg-opacity));\n}\n.p-1 {\n  padding: 0.25rem;\n}\n.p-2 {\n  padding: 0.5rem;\n}\n.p-4 {\n  padding: 1rem;\n}\n.px-2 {\n  padding-left: 0.5rem;\n  padding-right: 0.5rem;\n}\n.px-4 {\n  padding-left: 1rem;\n  padding-right: 1rem;\n}\n.py-0\\.5 {\n  padding-top: 0.125rem;\n  padding-bottom: 0.125rem;\n}\n.py-2 {\n  padding-top: 0.5rem;\n  padding-bottom: 0.5rem;\n}\n.font-mono {\n  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace;\n}\n.text-2xl {\n  font-size: 1.5rem;\n  line-height: 2rem;\n}\n.text-4xl {\n  font-size: 2.25rem;\n  line-height: 2.5rem;\n}\n.text-lg {\n  font-size: 1.125rem;\n  line-height: 1.75rem;\n}\n.font-bold {\n  font-weight: 700;\n}\n.font-medium {\n  font-weight: 500;\n}\n.italic {\n  font-style: italic;\n}\n.text-black {\n  --tw-text-opacity: 1;\n  color: rgb(0 0 0 / var(--tw-text-opacity));\n}\n.text-blue-400 {\n  --tw-text-opacity: 1;\n  color: rgb(96 165 250 / var(--tw-text-opacity));\n}\n.text-blue-500 {\n  --tw-text-opacity: 1;\n  color: rgb(59 130 246 / var(--tw-text-opacity));\n}\n.text-gray-700 {\n  --tw-text-opacity: 1;\n  color: rgb(55 65 81 / var(--tw-text-opacity));\n}\n.underline {\n  text-decoration-line: underline;\n}\n.opacity-25 {\n  opacity: 0.25;\n}\n.opacity-75 {\n  opacity: 0.75;\n}\n.shadow {\n  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);\n  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);\n  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);\n}\n.shadow-md {\n  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);\n  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);\n  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);\n}\n.outline {\n  outline-style: solid;\n}\n.filter {\n  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);\n}\n\nbody {\n    height: -moz-min-content;\n    height: min-content;\n    width: 600px;\n    padding: 2px;\n}\n\n.hover\\:bg-gray-500:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(107 114 128 / var(--tw-bg-opacity));\n}\n\n.hover\\:bg-green-700:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(21 128 61 / var(--tw-bg-opacity));\n}\n\n.focus\\:border-blue-500:focus {\n  --tw-border-opacity: 1;\n  border-color: rgb(59 130 246 / var(--tw-border-opacity));\n}\n\n.focus\\:outline-none:focus {\n  outline: 2px solid transparent;\n  outline-offset: 2px;\n}\n\n.disabled\\:bg-gray-200:disabled {\n  --tw-bg-opacity: 1;\n  background-color: rgb(229 231 235 / var(--tw-bg-opacity));\n}\n\n.disabled\\:bg-white:disabled {\n  --tw-bg-opacity: 1;\n  background-color: rgb(255 255 255 / var(--tw-bg-opacity));\n}",""]);const s=i},219:(n,e,t)=>{var o=t(540),r=t(338),a=t(72),i=t.n(a),s=t(825),l=t.n(s),c=t(659),d=t.n(c),g=t(56),p=t.n(g),b=t(159),m=t.n(b),h=t(113),u=t.n(h),w=t(702),f={};f.styleTagTransform=u(),f.setAttributes=p(),f.insert=d().bind(null,"head"),f.domAPI=l(),f.insertStyleElement=m(),i()(w.A,f),w.A&&w.A.locals&&w.A.locals;const y=n=>{switch(n){case"minor":return"bg-yellow-200";case"moderate":return"bg-orange-200";case"serious":return"bg-red-200";case"critical":return"bg-red-600";default:return"bg-gray-200"}},v=({violation:n,index:e})=>o.createElement("li",{className:"flex justify-between border-b border-gray-600 py-2"},o.createElement("div",{className:"flex items-start"},o.createElement("h1",null,e+1),o.createElement("div",{className:"px-2"},o.createElement("p",{className:"font-bold"},n.description),o.createElement("p",null,n.help),o.createElement("a",{className:"text-blue-400",href:n.helpUrl,target:"_blank",rel:"noopener noreferrer"},n.helpUrl))),o.createElement("div",null,o.createElement("h1",{className:`${y(n.impact)} px-2 py-0.5 rounded-md`},n.impact))),x=({chatLog:n,loading:e})=>{const t=(0,o.useRef)(null);return(0,o.useEffect)((()=>{var n;null===(n=t.current)||void 0===n||n.scrollIntoView({behavior:"smooth"})}),[n]),o.createElement("ul",{className:"space-y-4"},n.map(((n,e)=>o.createElement("li",{key:e,className:"flex flex-col w-full h-min px-2"},o.createElement("div",{className:("user"===n.agent?"items-end":"items-start")+" flex flex-col"},o.createElement("div",{className:"text-md px-2 font-mono font-bold"},"user"===n.agent?"":"Assistant"),o.createElement("div",{className:("user"===n.agent?"bg-blue-100":"bg-gray-100")+" w-fit p-2 rounded-2xl border border-gray-300 flex flex-col font-mono"},o.createElement("div",null,n.message)))))),o.createElement("div",{ref:t}))};const k=n=>{var{onClick:e,children:t,className:r}=n,a=function(n,e){var t={};for(var o in n)Object.prototype.hasOwnProperty.call(n,o)&&e.indexOf(o)<0&&(t[o]=n[o]);if(null!=n&&"function"==typeof Object.getOwnPropertySymbols){var r=0;for(o=Object.getOwnPropertySymbols(n);r<o.length;r++)e.indexOf(o[r])<0&&Object.prototype.propertyIsEnumerable.call(n,o[r])&&(t[o[r]]=n[o[r]])}return t}(n,["onClick","children","className"]);return o.createElement("button",Object.assign({},a,{onClick:e,className:`\n                p-2 \n                rounded-md \n                border-2 \n                bg-white \n                border-gray-300 \n                focus:outline-none \n                focus:border-blue-500 \n                disabled:bg-gray-200\n                ${r} `}),t)};var E=function(n,e,t,o){return new(t||(t=Promise))((function(r,a){function i(n){try{l(o.next(n))}catch(n){a(n)}}function s(n){try{l(o.throw(n))}catch(n){a(n)}}function l(n){var e;n.done?r(n.value):(e=n.value,e instanceof t?e:new t((function(n){n(e)}))).then(i,s)}l((o=o.apply(n,e||[])).next())}))};const z=document.createElement("div");document.body.appendChild(z),(0,r.H)(z).render(o.createElement((()=>{const[n,e]=(0,o.useState)([]),[t,r]=(0,o.useState)([]),[a,i]=(0,o.useState)(""),s=(0,o.useRef)(null),[l,c]=(0,o.useState)(!1),[d,g]=(0,o.useState)("Generating Violations"),[p,b]=(0,o.useState)(!1),[m,h]=(0,o.useState)("Loading");(0,o.useEffect)((()=>{const n=setInterval((()=>{p&&h((n=>"Loading..."===n?"Loading":"Loading"===n?"Loading.":"Loading."===n?"Loading..":"Loading.."===n?"Loading...":void 0)),l&&g((n=>"Generating Violations..."===n?"Generating Violations":"Generating Violations"===n?"Generating Violations.":"Generating Violations."===n?"Generating Violations..":"Generating Violations.."===n?"Generating Violations...":void 0))}),200);return()=>clearInterval(n)}),[p,l]),(0,o.useEffect)((()=>{chrome.tabs.query({active:!0,currentWindow:!0},(n=>{const t=n[0].id;chrome.storage.local.get([`violations_${t}`],(function(n){e(n[`violations_${t}`]||[])})),chrome.storage.local.get([`chatLog_${t}`],(function(n){r(n[`chatLog_${t}`]||[])}))}))}),[]);const u=(n,e,o)=>E(void 0,void 0,void 0,(function*(){b(!0);const a=[...t,{message:e,agent:o}];r(a),chrome.tabs.query({active:!0,currentWindow:!0},(n=>{const e=n[0].id;chrome.storage.local.set({[`chatLog_${e}`]:a})}));const i=yield fetch(n,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({chatLog:a})}),s=yield i.json(),l=[...a,{message:s.message,agent:"agent"}];r(l),chrome.tabs.query({active:!0,currentWindow:!0},(n=>{const e=n[0].id;chrome.storage.local.set({[`chatLog_${e}`]:l})})),b(!1)}));return o.createElement("div",{className:"flex flex-col w-full h-screen"},o.createElement("nav",{className:"fixed top-0 left-0 right-0 flex justify-around items-center p-4 bg-gray-900 text-black shadow-md"},o.createElement("div",{className:"flex space-x-1"},o.createElement(k,{onClick:()=>E(void 0,void 0,void 0,(function*(){c(!0);let n=yield chrome.runtime.sendMessage({message:"buttonClicked"});c(!1),console.log("Violations from background.ts: ",n.violations),e(n.violations),chrome.tabs.query({active:!0,currentWindow:!0},(e=>{const t=e[0].id;chrome.storage.local.set({[`violations_${t}`]:n.violations})}))})),className:"px-4 bg-gray-400 hover:bg-gray-500 rounded"},"View Violations"),o.createElement(k,{onClick:()=>{e([]),chrome.tabs.query({active:!0,currentWindow:!0},(n=>{const e=n[0].id;chrome.storage.local.set({[`violations_${e}`]:[]})})),chrome.runtime.sendMessage({message:"clearViolations"})},className:"px-4 bg-gray-400 hover:bg-gray-500 rounded"},"Clear Violations"),o.createElement(k,{onClick:e=>E(void 0,void 0,void 0,(function*(){e.preventDefault();const t=(n=>"Here are the violations I found on the page... "+n.map(((n,e)=>`${e+1}: ${n.description}`)).join(", "))(n);yield u("http://localhost:5000/violations",t,"Violation(s)")})),disabled:0===n.length,className:"px-4 bg-gray-500 hover:bg-green-700 rounded"},"Get Suggestions"),o.createElement(k,{onClick:()=>{r([]),chrome.tabs.query({active:!0,currentWindow:!0},(n=>{const e=n[0].id;chrome.storage.local.set({[`chatLog_${e}`]:[]})}))},className:"px-4 bg-gray-400 hover:bg-gray-500 rounded"},"Reset Chat"))),o.createElement("div",{className:"mt-24 mb-4"},l?o.createElement("div",{className:"flex items-center justify-center space-x-2"},o.createElement("svg",{className:"animate-spin h-5 w-5 text-blue-500",xmlns:"http://www.w3.org/2000/svg",fill:"none",viewBox:"0 0 24 24"},o.createElement("circle",{className:"opacity-25",cx:"12",cy:"12",r:"10",stroke:"currentColor",strokeWidth:"4"}),o.createElement("path",{className:"opacity-75",fill:"currentColor",d:"M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"})),o.createElement("span",{className:"text-lg font-medium text-gray-700"},d)):o.createElement("ul",{className:"px-2"},n.map(((n,e)=>o.createElement(v,{key:e,violation:n,index:e}))))),o.createElement(x,{chatLog:t,loading:p}),o.createElement("div",{className:"sticky bottom-0 left-0 right-0 justify-center items-center flex h-12"},o.createElement("form",{onSubmit:n=>E(void 0,void 0,void 0,(function*(){n.preventDefault(),s.current&&s.current.focus();const e=a.trim();i(""),yield u("http://localhost:5000/chat",e,"user")})),className:"flex justify-center w-full"},o.createElement("input",{ref:s,className:"\n                            w-3/4\n                            mx-auto\n                            p-2\n                            rounded-md \n                            border-2 \n                            border-gray-300 \n                            focus:outline-none \n                            focus:border-blue-500\n                            disabled:bg-white\n                            font-size-lg\n                        ",value:a,onChange:n=>i(n.target.value),placeholder:`${p?m:"Type your message here..."}`,disabled:p}))))}),null))}},t={};function o(n){var r=t[n];if(void 0!==r)return r.exports;var a=t[n]={id:n,exports:{}};return e[n](a,a.exports,o),a.exports}o.m=e,n=[],o.O=(e,t,r,a)=>{if(!t){var i=1/0;for(d=0;d<n.length;d++){for(var[t,r,a]=n[d],s=!0,l=0;l<t.length;l++)(!1&a||i>=a)&&Object.keys(o.O).every((n=>o.O[n](t[l])))?t.splice(l--,1):(s=!1,a<i&&(i=a));if(s){n.splice(d--,1);var c=r();void 0!==c&&(e=c)}}return e}a=a||0;for(var d=n.length;d>0&&n[d-1][2]>a;d--)n[d]=n[d-1];n[d]=[t,r,a]},o.n=n=>{var e=n&&n.__esModule?()=>n.default:()=>n;return o.d(e,{a:e}),e},o.d=(n,e)=>{for(var t in e)o.o(e,t)&&!o.o(n,t)&&Object.defineProperty(n,t,{enumerable:!0,get:e[t]})},o.o=(n,e)=>Object.prototype.hasOwnProperty.call(n,e),(()=>{var n={887:0};o.O.j=e=>0===n[e];var e=(e,t)=>{var r,a,[i,s,l]=t,c=0;if(i.some((e=>0!==n[e]))){for(r in s)o.o(s,r)&&(o.m[r]=s[r]);if(l)var d=l(o)}for(e&&e(t);c<i.length;c++)a=i[c],o.o(n,a)&&n[a]&&n[a][0](),n[a]=0;return o.O(d)},t=self.webpackChunkboilerplate_react_chrome_extension=self.webpackChunkboilerplate_react_chrome_extension||[];t.forEach(e.bind(null,0)),t.push=e.bind(null,t.push.bind(t))})(),o.nc=void 0;var r=o.O(void 0,[814],(()=>o(219)));r=o.O(r)})();
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/components/Buttons.tsx":
+/*!************************************!*\
+  !*** ./src/components/Buttons.tsx ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Button: () => (/* binding */ Button)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+var __rest = (undefined && undefined.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
+
+const Button = (_a) => {
+    var { onClick, children, className } = _a, props = __rest(_a, ["onClick", "children", "className"]);
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", Object.assign({}, props, { onClick: onClick, className: `
+                p-2 
+                rounded-md 
+                border-2 
+                bg-white 
+                border-gray-300 
+                focus:outline-none 
+                focus:border-blue-500 
+                disabled:bg-gray-200
+                ${className} ` }), children));
+};
+
+
+/***/ }),
+
+/***/ "./src/components/Card.tsx":
+/*!*********************************!*\
+  !*** ./src/components/Card.tsx ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _assets_tailwind_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/tailwind.css */ "./src/assets/tailwind.css");
+
+
+const getImpactColour = (impact) => {
+    switch (impact) {
+        case 'minor':
+            return 'bg-yellow-200';
+        case 'moderate':
+            return 'bg-orange-200';
+        case 'serious':
+            return 'bg-red-200';
+        case 'critical':
+            return 'bg-red-600';
+        default:
+            return 'bg-gray-200';
+    }
+};
+const handleScrollToViolation = (index) => {
+    chrome.runtime.sendMessage({ message: 'scrollToViolation', index: index });
+};
+const Card = ({ violation, index }) => {
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: 'flex justify-between border-b border-gray-600 py-2' },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex items-start' },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, index + 1),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'px-2' },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", { className: 'font-bold w-fit cursor-pointer', onClick: () => handleScrollToViolation(index) }, violation.description),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, violation.help),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", { className: 'text-blue-400', href: violation.helpUrl, target: '_blank', rel: 'noopener noreferrer' }, violation.helpUrl))),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", { className: `${getImpactColour(violation.impact)} px-2 py-0.5 rounded-md` }, violation.impact))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Card);
+
+
+/***/ }),
+
+/***/ "./src/components/ChatLog.tsx":
+/*!************************************!*\
+  !*** ./src/components/ChatLog.tsx ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+const ChatLog = ({ chatLog, loading }) => {
+    const messagesEndRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+    const scrollToBottom = () => {
+        var _a;
+        (_a = messagesEndRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
+    };
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+        scrollToBottom();
+    }, [chatLog]);
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: `space-y-4` },
+        chatLog.map((chat, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { key: index, className: `flex flex-col w-full h-min px-2` },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: `${chat.agent === 'user' ? 'items-end' : 'items-start'} flex flex-col` },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'text-md px-2 font-mono font-bold' }, chat.agent === 'user' ? '' : 'Assistant'),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: `${chat.agent === 'user' ? 'bg-blue-100' : 'bg-gray-100'} w-fit p-2 rounded-2xl border border-gray-300 flex flex-col font-mono` },
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, chat.message)))))),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { ref: messagesEndRef })));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ChatLog);
+
+
+/***/ }),
+
+/***/ "./src/popup/popup.tsx":
+/*!*****************************!*\
+  !*** ./src/popup/popup.tsx ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
+/* harmony import */ var _assets_tailwind_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/tailwind.css */ "./src/assets/tailwind.css");
+/* harmony import */ var _components_Card__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Card */ "./src/components/Card.tsx");
+/* harmony import */ var _util_formatViolations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../util/formatViolations */ "./src/util/formatViolations.ts");
+/* harmony import */ var _components_ChatLog__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/ChatLog */ "./src/components/ChatLog.tsx");
+/* harmony import */ var _components_Buttons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/Buttons */ "./src/components/Buttons.tsx");
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+
+
+
+
+//TODO: Change this to the server's URL
+const BASE_URL = 'http://172.105.106.240';
+const VIOLATION_URL = `${BASE_URL}/violations`;
+const CHAT_URL = `${BASE_URL}/chat`;
+const Popup = () => {
+    const [violations, setViolations] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+    const [chatLog, setChatLog] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+    const [input, setInput] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const inputRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+    // generating violations logic
+    const [generatingViolations, setGeneratingViolations] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    const [generatingViolationsText, setGeneratingViolationsText] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('Generating Violations');
+    // Loading Logic
+    const [loading, setLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    const [loadingText, setLoadingText] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('Loading');
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+        const interval = setInterval(() => {
+            if (loading) {
+                setLoadingText((prevText) => {
+                    if (prevText === 'Loading...')
+                        return 'Loading';
+                    else if (prevText === 'Loading')
+                        return 'Loading.';
+                    else if (prevText === 'Loading.')
+                        return 'Loading..';
+                    else if (prevText === 'Loading..')
+                        return 'Loading...';
+                });
+            }
+            if (generatingViolations) {
+                setGeneratingViolationsText((prevText) => {
+                    if (prevText === 'Generating Violations...')
+                        return 'Generating Violations';
+                    else if (prevText === 'Generating Violations')
+                        return 'Generating Violations.';
+                    else if (prevText === 'Generating Violations.')
+                        return 'Generating Violations..';
+                    else if (prevText === 'Generating Violations..')
+                        return 'Generating Violations...';
+                });
+            }
+        }, 200);
+        return () => clearInterval(interval);
+    }, [loading, generatingViolations]);
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            chrome.storage.local.get([`violations_${tabId}`, `chatLog_${tabId}`, `violationsGenerated_${tabId}`], function (result) {
+                setViolations(result[`violations_${tabId}`] || []);
+                setChatLog(result[`chatLog_${tabId}`] || []);
+                if (!result[`violationsGenerated_${tabId}`]) {
+                    handleGenerateViolations(tabId);
+                }
+            });
+        });
+    }, []);
+    // save chat log to local storage so it persists between popup reloads
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            chrome.storage.local.set({ [`chatLog_${tabId}`]: chatLog });
+        });
+    }, [chatLog]);
+    const handleGenerateViolations = (tabId) => __awaiter(void 0, void 0, void 0, function* () {
+        setGeneratingViolations(true);
+        let response = yield chrome.runtime.sendMessage({ message: 'buttonClicked' });
+        setGeneratingViolations(false);
+        console.log("Violations from background.ts: ", response.violations);
+        setViolations(response.violations);
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            chrome.storage.local.set({ [`violations_${tabId}`]: response.violations,
+                [`violationsGenerated_${tabId}`]: true });
+        });
+    });
+    const handleClearViolations = () => {
+        setViolations([]);
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            chrome.storage.local.set({ [`violations_${tabId}`]: [],
+                [`violationsGenerated_${tabId}`]: false });
+        });
+        chrome.runtime.sendMessage({ message: 'clearViolations' });
+    };
+    const updateChatLog = (url, message, agent) => __awaiter(void 0, void 0, void 0, function* () {
+        setLoading(true);
+        const newChatLog = [...chatLog, { message, agent }];
+        setChatLog(newChatLog);
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            chrome.storage.local.set({ [`chatLog_${tabId}`]: newChatLog });
+        });
+        const response = yield fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                chatLog: newChatLog
+            })
+        });
+        const data = yield response.json();
+        const updatedChatLog = [...newChatLog, { message: data.message, agent: 'agent' }];
+        setChatLog(updatedChatLog);
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            chrome.storage.local.set({ [`chatLog_${tabId}`]: updatedChatLog });
+        });
+        setLoading(false);
+    });
+    const handleClearChatLog = () => {
+        setChatLog([]);
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            chrome.storage.local.set({ [`chatLog_${tabId}`]: [] });
+        });
+    };
+    const handleGenerateViolationsButtonClick = () => {
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            handleClearViolations();
+            handleGenerateViolations(tabId);
+        });
+    };
+    const getSuggestions = (e) => __awaiter(void 0, void 0, void 0, function* () {
+        e.preventDefault();
+        const descriptions = (0,_util_formatViolations__WEBPACK_IMPORTED_MODULE_4__["default"])(violations);
+        yield updateChatLog(VIOLATION_URL, descriptions, 'Violation(s)');
+    });
+    const handleSubmit = (e) => __awaiter(void 0, void 0, void 0, function* () {
+        e.preventDefault();
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+        const message = input.trim();
+        setInput('');
+        yield updateChatLog(CHAT_URL, message, 'user');
+    });
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex flex-col w-full h-screen' },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("nav", { className: 'fixed top-0 left-0 right-0 flex justify-around items-center p-4 bg-gray-900 text-black shadow-md' },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex space-x-1' },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: handleGenerateViolationsButtonClick, className: 'px-4 bg-gray-400 hover:bg-gray-500 rounded' }, "Regenerate Violations"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: handleClearViolations, className: 'px-4 bg-gray-400 hover:bg-gray-500 rounded' }, "Clear Violations"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: getSuggestions, disabled: violations.length === 0, className: 'px-4 bg-gray-500 hover:bg-green-700 rounded' }, "Get Suggestions"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: handleClearChatLog, className: 'px-4 bg-gray-400 hover:bg-gray-500 rounded' }, "Reset Chat"))),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'mt-24 mb-4' }, generatingViolations ? react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex items-center justify-center space-x-2' },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("svg", { className: 'animate-spin h-5 w-5 text-blue-500', xmlns: 'http://www.w3.org/2000/svg', fill: 'none', viewBox: '0 0 24 24' },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("circle", { className: 'opacity-25', cx: '12', cy: '12', r: '10', stroke: 'currentColor', strokeWidth: '4' }),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", { className: 'opacity-75', fill: 'currentColor', d: 'M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z' })),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", { className: 'text-lg font-medium text-gray-700' }, generatingViolationsText)) :
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: 'px-2' }, violations.map((violation, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Card__WEBPACK_IMPORTED_MODULE_3__["default"], { key: index, violation: violation, index: index }))))),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_ChatLog__WEBPACK_IMPORTED_MODULE_5__["default"], { chatLog: chatLog, loading: loading }),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'sticky bottom-0 left-0 right-0 justify-center items-center flex h-12' },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", { onSubmit: handleSubmit, className: 'flex justify-center w-full' },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { ref: inputRef, className: '\n                            w-3/4\n                            mx-auto\n                            p-2\n                            rounded-md \n                            border-2 \n                            border-gray-300 \n                            focus:outline-none \n                            focus:border-blue-500\n                            disabled:bg-white\n                            font-size-lg\n                        ', value: input, onChange: (e) => setInput(e.target.value), placeholder: `${loading ? loadingText : 'Talk with your assistant...'}`, disabled: loading })))));
+};
+const container = document.createElement('div');
+document.body.appendChild(container);
+const root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot)(container);
+root.render(react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Popup, null));
+
+
+/***/ }),
+
+/***/ "./src/util/formatViolations.ts":
+/*!**************************************!*\
+  !*** ./src/util/formatViolations.ts ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const formatViolations = (violations) => {
+    return 'Here are the violations I found on the page... ' + violations.map((item, index) => `${index + 1}: ${item.description}`).join(', ');
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (formatViolations);
+
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			id: moduleId,
+/******/ 			loaded: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var [chunkIds, fn, priority] = deferred[i];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/node module decorator */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nmd = (module) => {
+/******/ 			module.paths = [];
+/******/ 			if (!module.children) module.children = [];
+/******/ 			return module;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"popup": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunkboilerplate_react_chrome_extension"] = self["webpackChunkboilerplate_react_chrome_extension"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/nonce */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nc = undefined;
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_sour-b53f7e","src_assets_tailwind_css"], () => (__webpack_require__("./src/popup/popup.tsx")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
+/******/ })()
+;
+//# sourceMappingURL=popup.js.map

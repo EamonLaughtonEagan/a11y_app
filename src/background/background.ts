@@ -1,7 +1,9 @@
 
 chrome.runtime.onInstalled.addListener(() => {
-    console.log('background.js')
+    console.log('background.ts: extension installed');
 })
+
+const styles = ''
 
 function runAxe(tabId) {
     return new Promise((resolve, reject) => {
@@ -14,35 +16,45 @@ function runAxe(tabId) {
                         ...violation,
                         nodes: violation.nodes.map(node => {
                             const element = document.querySelector(node.target);
-                            element.style.border = '2px solid red';
-                            element.style.borderRadius = '8px';
+                            element.id = `violation-${index}`;
+                            const elementStyles = {
+                                border: '2px solid blue',
+                                borderRadius: '8px'
+                            }
+                            Object.assign(element.style, elementStyles);
                             element.classList.add('violation-style-element');
 
                             // create label
                             const label = document.createElement('div');
                             label.textContent = (index + 1).toString();
-                            label.style.position = 'absolute';
-                            label.style.color = 'black';
-                            label.style.border = '2px solid black';
-                            label.style.borderRadius = '8px';
-                            label.style.zIndex = '9999';
-                            label.style.left = '0';
+                            const labelStyles = {
+                                position: 'absolute',
+                                color: 'black',
+                                border: '2px solid black',
+                                borderRadius: '8px',
+                                zIndex: '9999',
+                                left: '0'
+                            }
+                            Object.assign(label.style, labelStyles);
                             label.classList.add('violation-style-label');
                             element.insertBefore(label, element.firstChild);
 
                             // create popup
                             const popup = document.createElement('div');
                             popup.textContent = violation.description;
-                            //popup.style.position = 'absolute';
-                            popup.style.backgroundColor = 'white';
-                            popup.style.border = '1px solid black';
-                            popup.style.padding = '5px';
-                            popup.style.zIndex = '10000';
-                            popup.style.left = '0';
-                            popup.style.bottom = '100%'; // Position above the label
-                            popup.style.marginBottom = '20px'; // Add some space between label and popup
-                            popup.style.display = 'none';
+                            const popupStyles = {
+                                backgroundColor: 'white',
+                                border: '1px solid black',
+                                padding: '5px',
+                                zIndex: '10000',
+                                left: '0',
+                                bottom: '100%', // Position above the label
+                                marginBottom: '20px', // Add some space between label and popup
+                                display: 'none'
+                            }
+                            Object.assign(popup.style, popupStyles);
                             popup.classList.add('violation-style-popup');
+
                             // Show popup on hover
                             element.addEventListener('mouseenter', () => {
                                 popup.style.display = 'block';
@@ -56,7 +68,7 @@ function runAxe(tabId) {
                             } else {
                                 element.appendChild(popup);
                             }
-
+                            
                             return node.target;
                         })
                     }
@@ -101,7 +113,20 @@ function clearStyles() {
     });
 };
 
+const scrollToViolation = (index: number) => {
+    const element = document.getElementById(`violation-${index}`);
+    element.style.border = '2px solid yellow';
+    console.log(`Scrolling to violation ${index}`);
+    console.log(element);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+        console.error(`Element with id 'violation-${index}' not found`);
+    }
+};
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log('background.ts: received message', request);
     if (request.message === 'buttonClicked') {
         chrome.tabs.query({active: true, currentWindow: true}, tabs => {
             if (tabs[0].id) {
@@ -135,5 +160,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             }
         });
         return true;
+    } else if (request.message === 'scrollToViolation') {
+        chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+            if (tabs[0].id) {
+                const tabId = tabs[0].id;
+                chrome.scripting.executeScript({
+                    target: { tabId },
+                    func: scrollToViolation,
+                    args: [request.index] // Pass the index as an argument
+                })
+            }
+        });
+        return true;
     }
 });
+

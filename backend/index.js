@@ -2,19 +2,28 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { OpenAI } from 'openai';
+import dotenv from 'dotenv';
+dotenv.config();
 
-// place in .env file
-const PORT = 5000;
-const API_KEY = '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'
+const PORT = process.env.PORT;
+const API_KEY = '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';
+const ORG = process.env.ORG;
 
 const openai = new OpenAI({
-    organization: "org-h1pJKKZZEwlKIHLQRucwfc4b",
+    organization: ORG,
     apiKey: API_KEY
 })
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+
+app.get('/chat', async (req, res) => {
+    res.status(200).json({
+        success: true,
+        data: req.body
+    })
+})
 
 app.post('/violations', async (req, res) => {
     console.log(req.body);
@@ -59,7 +68,7 @@ app.post('/chat', async (req, res) => {
     let messages = [
         {
             role: 'system',
-            content: 'you are an accessibilty expert trained in wcag 2.0 and deque axe tool specifically for finding violations in websites'
+            content: 'you are an accessibilty expert trained in wcag 2.1 and deque axe tool specifically for finding violations in websites'
         }
     ]
 

@@ -1,5 +1,4 @@
 import React, {useEffect, useRef} from "react";
-
 const ChatLog = ({ chatLog, loading }) => {
 
     const messagesEndRef = useRef(null);
@@ -13,7 +12,7 @@ const ChatLog = ({ chatLog, loading }) => {
 
     return (
         <ul className={`space-y-4`}>
-            {chatLog.map((chat, index) => (
+            {chatLog.map((chat: { agent: string; message: string; }, index: React.Key) => (
                 <li 
                     key={index} 
                     className={`flex flex-col w-full h-min px-2`}

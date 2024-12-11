@@ -6,8 +6,10 @@ import formatViolations from '../util/formatViolations'
 import ChatLog from '../components/ChatLog'
 import { Button } from '../components/Buttons'
 
-const VIOLATION_URL = 'http://localhost:5000/violations'
-const CHAT_URL = 'http://localhost:5000/chat'
+//TODO: Change this to the server's URL
+const BASE_URL = 'http://172.105.106.240'
+const VIOLATION_URL = `${BASE_URL}/violations`
+const CHAT_URL = `${BASE_URL}/chat`
 
 type chatLog = {
     message: string,
@@ -54,24 +56,33 @@ const Popup = () => {
     useEffect(() => {
         chrome.tabs.query({active: true, currentWindow: true}, tabs => {
             const tabId = tabs[0].id;
-            chrome.storage.local.get([`violations_${tabId}`], function(result) {
+            chrome.storage.local.get([`violations_${tabId}`, `chatLog_${tabId}`, `violationsGenerated_${tabId}`], function(result) {
                 setViolations(result[`violations_${tabId}`] || [])
-            })
-            chrome.storage.local.get([`chatLog_${tabId}`], function(result) {
                 setChatLog(result[`chatLog_${tabId}`] || [])
+                if (!result[`violationsGenerated_${tabId}`]) {
+                    handleGenerateViolations(tabId);
+                }
             })
         })
     }, [])
 
-    const handleClick = async () => {
+    // save chat log to local storage so it persists between popup reloads
+    useEffect(() => {
+        chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+            const tabId = tabs[0].id;
+            chrome.storage.local.set({ [`chatLog_${tabId}`]: chatLog })
+        })
+    }, [chatLog])
+
+    const handleGenerateViolations = async (tabId: number) => {
         setGeneratingViolations(true)
         let response = await chrome.runtime.sendMessage({ message: 'buttonClicked' })
         setGeneratingViolations(false)
         console.log("Violations from background.ts: ", response.violations)
         setViolations(response.violations)
         chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-            const tabId = tabs[0].id;
-            chrome.storage.local.set({ [`violations_${tabId}`]: response.violations });
+            chrome.storage.local.set({ [`violations_${tabId}`]: response.violations, 
+            [`violationsGenerated_${tabId}`]: true });
         })
     }
 
@@ -79,12 +90,13 @@ const Popup = () => {
         setViolations([])
         chrome.tabs.query({active: true, currentWindow: true}, tabs => {
             const tabId = tabs[0].id;
-            chrome.storage.local.set({ [`violations_${tabId}`]: [] });
+            chrome.storage.local.set({ [`violations_${tabId}`]: [], 
+            [`violationsGenerated_${tabId}`]: false });
         })
         chrome.runtime.sendMessage({ message: 'clearViolations' });
     }
      
-    const updateChatLog = async (url, message, agent) => {
+    const updateChatLog = async (url: string | URL | Request, message: string, agent: string) => {
         setLoading(true)
         const newChatLog = [...chatLog, { message, agent}]
         setChatLog(newChatLog)
@@ -120,6 +132,14 @@ const Popup = () => {
         })
     }
 
+    const handleGenerateViolationsButtonClick = () => {
+        chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+            const tabId = tabs[0].id;
+            handleClearViolations();
+            handleGenerateViolations(tabId);
+        })
+    }
+
     const getSuggestions = async (e) => {
         e.preventDefault()
         const descriptions = formatViolations(violations)
@@ -140,8 +160,8 @@ const Popup = () => {
         <div className='flex flex-col w-full h-screen'>
             <nav className='fixed top-0 left-0 right-0 flex justify-around items-center p-4 bg-gray-900 text-black shadow-md'>
                 <div className='flex space-x-1'>
-                    <Button onClick={handleClick} className='px-4 bg-gray-400 hover:bg-gray-500 rounded'>
-                        View Violations
+                    <Button onClick={handleGenerateViolationsButtonClick} className='px-4 bg-gray-400 hover:bg-gray-500 rounded'>
+                        Regenerate Violations
                     </Button>
                     <Button onClick={handleClearViolations} className='px-4 bg-gray-400 hover:bg-gray-500 rounded'>
                         Clear Violations
@@ -201,7 +221,7 @@ const Popup = () => {
                         '
                         value={input} 
                         onChange={(e) => setInput(e.target.value)} 
-                        placeholder={`${loading ? loadingText : 'Type your message here...'}`}
+                        placeholder={`${loading ? loadingText : 'Talk with your assistant...'}`}
                         disabled={loading}
                     >
                             
