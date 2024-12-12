@@ -160,7 +160,7 @@ const Popup = () => {
         <div className='flex flex-col w-full h-screen'>
             <nav className='fixed top-0 left-0 right-0 flex justify-around items-center p-4 bg-gray-900 text-black shadow-md'>
                 <div className='flex space-x-1'>
-                    <Button onClick={handleGenerateViolationsButtonClick} className='px-4 bg-gray-400 hover:bg-gray-500 rounded'>
+                    <Button onClick={handleGenerateViolationsButtonClick} disabled={generatingViolations} className='px-4 bg-gray-400 hover:bg-gray-500 rounded'>
                         Regenerate Violations
                     </Button>
                     <Button onClick={handleClearViolations} className='px-4 bg-gray-400 hover:bg-gray-500 rounded'>

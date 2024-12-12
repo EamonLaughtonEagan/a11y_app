@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Modal from './Modal'
 
-window.onload = () => {
-    console.log('content script loaded!!!');
-}
-
 const ContentScript = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -57,8 +53,7 @@ const ContentScript = () => {
             <h1>Modal Content</h1>
             <p>This is the content of the modal</p>
         </Modal>
-        </div>
-        
+        </div>  
     )
 }
 

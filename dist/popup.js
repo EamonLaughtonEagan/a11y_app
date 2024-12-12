@@ -297,7 +297,7 @@ const Popup = () => {
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex flex-col w-full h-screen' },
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement("nav", { className: 'fixed top-0 left-0 right-0 flex justify-around items-center p-4 bg-gray-900 text-black shadow-md' },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex space-x-1' },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: handleGenerateViolationsButtonClick, className: 'px-4 bg-gray-400 hover:bg-gray-500 rounded' }, "Regenerate Violations"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: handleGenerateViolationsButtonClick, disabled: generatingViolations, className: 'px-4 bg-gray-400 hover:bg-gray-500 rounded' }, "Regenerate Violations"),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: handleClearViolations, className: 'px-4 bg-gray-400 hover:bg-gray-500 rounded' }, "Clear Violations"),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: getSuggestions, disabled: violations.length === 0, className: 'px-4 bg-gray-500 hover:bg-green-700 rounded' }, "Get Suggestions"),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: handleClearChatLog, className: 'px-4 bg-gray-400 hover:bg-gray-500 rounded' }, "Reset Chat"))),
@@ -515,7 +515,7 @@ const formatViolations = (violations) => {
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_sour-b53f7e","src_assets_tailwind_css"], () => (__webpack_require__("./src/popup/popup.tsx")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_react-dom_client_js","src_assets_tailwind_css"], () => (__webpack_require__("./src/popup/popup.tsx")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
