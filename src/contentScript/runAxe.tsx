@@ -66,13 +66,7 @@ function runAxe(tabId) {
                                 element.appendChild(popup);
                             }
 
-                            // Render ContentScript component
-                            // const contentScriptContainer = document.createElement('div');
-                            // element.appendChild(contentScriptContainer);
-                            // const root = createRoot(contentScriptContainer);
-                            // root.render(<ContentScript />);
-
-                            return node;
+                            return node.target;
                         })
                     }
                 })

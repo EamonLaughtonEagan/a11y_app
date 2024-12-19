@@ -1,4 +1,4 @@
-import { renderContentScript } from "../contentScript";
+
 import runAxe from "../contentScript/runAxe";
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -52,22 +52,24 @@ const scrollToViolation = (index: number) => {
     }
 };
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log('background.ts: received message', request);
-    if (request.message === 'buttonClicked') {
-        chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-            if (tabs[0].id) {
-                const tabId = tabs[0].id;
-                // Inject axe-core library
-                chrome.scripting.executeScript({
-                    target: { tabId },
-                    func: renderContentScript
-                })
-            }
-        });
-        return true; // This is required to use sendResponse asynchronously
-    }
-});
+
+
+// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+//     console.log('background.ts: received message', request);
+//     if (request.message === 'buttonClicked') {
+//         chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+//             if (tabs[0].id) {
+//                 const tabId = tabs[0].id;
+//                 // Inject axe-core library
+//                 chrome.scripting.executeScript({
+//                     target: { tabId },
+//                     func: renderContentScript
+//                 })
+//             }
+//         });
+//         return true; // This is required to use sendResponse asynchronously
+//     }
+// });
 
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
