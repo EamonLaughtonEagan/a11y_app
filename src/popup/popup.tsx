@@ -66,6 +66,11 @@ const Popup = () => {
         })
     }, [])
 
+    useEffect(() => {
+        chrome.runtime.sendMessage({ message: 'renderContentScript' });
+    }, [])
+
+
     // save chat log to local storage so it persists between popup reloads
     useEffect(() => {
         chrome.tabs.query({active: true, currentWindow: true}, tabs => {

@@ -33650,7 +33650,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const renderContentScript = () => {
-    const headers = document.querySelectorAll('div');
+    const headers = document.querySelectorAll('h1');
     headers.forEach(header => {
         const appContainer = document.createElement('div');
         const shadowRoot = appContainer.attachShadow({ mode: 'open' });
@@ -33661,6 +33661,16 @@ const renderContentScript = () => {
         root.render(react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_contentScript__WEBPACK_IMPORTED_MODULE_2__["default"], null));
     });
 };
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.message === 'renderContentScript') {
+        renderContentScript();
+        sendResponse({ message: 'contentScriptRendered' });
+        console.log('contentScript.tsx: rendered');
+    }
+    else {
+        sendResponse({ message: 'unknownMessage' });
+    }
+});
 //renderContentScript();
 
 })();

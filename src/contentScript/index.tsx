@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import ContentScript from './contentScript'
 
 export const renderContentScript = () => {
-    const headers = document.querySelectorAll('div');
+    const headers = document.querySelectorAll('h1');
     headers.forEach(header => {
         const appContainer = document.createElement('div');
         const shadowRoot = appContainer.attachShadow({ mode: 'open' });
@@ -14,5 +14,15 @@ export const renderContentScript = () => {
         root.render(<ContentScript />);
     });
 }
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.message === 'renderContentScript') {
+        renderContentScript();
+        sendResponse({ message: 'contentScriptRendered' });
+        console.log('contentScript.tsx: rendered');
+    } else {
+        sendResponse({ message: 'unknownMessage' });
+    }
+});
 
 //renderContentScript();

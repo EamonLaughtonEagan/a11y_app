@@ -213,6 +213,9 @@ const Popup = () => {
             });
         });
     }, []);
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+        chrome.runtime.sendMessage({ message: 'renderContentScript' });
+    }, []);
     // save chat log to local storage so it persists between popup reloads
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
         chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
