@@ -76,6 +76,8 @@ const handleScrollToViolation = (index) => {
     chrome.runtime.sendMessage({ message: 'scrollToViolation', index: index });
 };
 const Card = ({ violation, index }) => {
+    console.log('violationFromCard:', violation.nodes.map(node => node));
+    console.log('violationFromCard:', violation);
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: 'flex justify-between border-b border-gray-600 py-2' },
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex items-start' },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, index + 1),
@@ -84,7 +86,8 @@ const Card = ({ violation, index }) => {
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, violation.help),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", { className: 'text-blue-400', href: violation.helpUrl, target: '_blank', rel: 'noopener noreferrer' }, violation.helpUrl))),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", { className: `${getImpactColour(violation.impact)} px-2 py-0.5 rounded-md` }, violation.impact))));
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", { className: `${getImpactColour(violation.impact)} px-2 py-0.5 rounded-md` }, violation.impact),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", { className: 'font-bold px-2 py-0.5 rounded-md bg-blue-600 text-white' }, violation.nodes.length === 1 ? `${violation.nodes.length} - Issue` : `${violation.nodes.length} - Issues`))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Card);
 
@@ -304,12 +307,14 @@ const Popup = () => {
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: handleClearViolations, className: 'px-4 bg-gray-400 hover:bg-gray-500 rounded' }, "Clear Violations"),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: getSuggestions, disabled: violations.length === 0, className: 'px-4 bg-gray-500 hover:bg-green-700 rounded' }, "Get Suggestions"),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: handleClearChatLog, className: 'px-4 bg-gray-400 hover:bg-gray-500 rounded' }, "Reset Chat"))),
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'mt-24 mb-4' }, generatingViolations ? react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex items-center justify-center space-x-2' },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'mt-20 mb-4' }, generatingViolations ? react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex items-center justify-center space-x-2' },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("svg", { className: 'animate-spin h-5 w-5 text-blue-500', xmlns: 'http://www.w3.org/2000/svg', fill: 'none', viewBox: '0 0 24 24' },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("circle", { className: 'opacity-25', cx: '12', cy: '12', r: '10', stroke: 'currentColor', strokeWidth: '4' }),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", { className: 'opacity-75', fill: 'currentColor', d: 'M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z' })),
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", { className: 'text-lg font-medium text-gray-700' }, generatingViolationsText)) :
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: 'px-2' }, violations.map((violation, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Card__WEBPACK_IMPORTED_MODULE_3__["default"], { key: index, violation: violation, index: index }))))),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", { className: 'text-center text-2xl font-bold' }, "Violations"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: 'px-2' }, violations.map((violation, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Card__WEBPACK_IMPORTED_MODULE_3__["default"], { key: index, violation: violation, index: index })))))),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_ChatLog__WEBPACK_IMPORTED_MODULE_5__["default"], { chatLog: chatLog, loading: loading }),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'sticky bottom-0 left-0 right-0 justify-center items-center flex h-12' },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", { onSubmit: handleSubmit, className: 'flex justify-center w-full' },

@@ -179,7 +179,7 @@ const Popup = () => {
                     </Button>
                 </div>
             </nav>
-            <div className='mt-24 mb-4'>
+            <div className='mt-20 mb-4'>
                 {generatingViolations ? <div className='flex items-center justify-center space-x-2'>
                     <svg className='animate-spin h-5 w-5 text-blue-500' 
                         xmlns='http://www.w3.org/2000/svg' 
@@ -201,11 +201,14 @@ const Popup = () => {
                     </svg>
                     <span className='text-lg font-medium text-gray-700'>{generatingViolationsText}</span>
                 </div> : 
-                <ul className='px-2'>
-                    {violations.map((violation, index) => (
-                        <Card key={index} violation={violation} index={index}/>
-                    ))}
-                </ul>}
+                <div>
+                    <h1 className='text-center text-2xl font-bold'>Violations</h1>
+                    <ul className='px-2'>
+                        {violations.map((violation, index) => (
+                            <Card key={index} violation={violation} index={index}/>
+                        ))}
+                    </ul>
+                </div>}
             </div>
             <ChatLog chatLog={chatLog} loading={loading}/>
             <div className='sticky bottom-0 left-0 right-0 justify-center items-center flex h-12'>

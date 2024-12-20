@@ -33639,39 +33639,46 @@ var __webpack_exports__ = {};
   !*** ./src/contentScript/index.tsx ***!
   \*************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   renderContentScript: () => (/* binding */ renderContentScript)
-/* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 /* harmony import */ var _contentScript__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./contentScript */ "./src/contentScript/contentScript.tsx");
-
-
-
-const renderContentScript = () => {
-    const headers = document.querySelectorAll('h1');
-    headers.forEach(header => {
-        const appContainer = document.createElement('div');
-        const shadowRoot = appContainer.attachShadow({ mode: 'open' });
-        header.parentNode.insertBefore(appContainer, header.nextSibling);
-        const shadowDiv = document.createElement('div');
-        shadowRoot.appendChild(shadowDiv);
-        const root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot)(shadowDiv);
-        root.render(react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_contentScript__WEBPACK_IMPORTED_MODULE_2__["default"], null));
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.message === 'renderContentScript') {
-        renderContentScript();
-        sendResponse({ message: 'contentScriptRendered' });
-        console.log('contentScript.tsx: rendered');
-    }
-    else {
-        sendResponse({ message: 'unknownMessage' });
+
+
+
+const renderContentScript = () => __awaiter(void 0, void 0, void 0, function* () {
+    const elements = document.querySelectorAll('h1, h2');
+    console.log('header_elements:', elements);
+    if (!document.getElementById('app-container')) {
+        elements.forEach((element, key) => {
+            const appContainer = document.createElement('div');
+            appContainer.setAttribute('id', `app-container`);
+            const shadowRoot = appContainer.attachShadow({ mode: 'open' });
+            element.parentNode.insertBefore(appContainer, element.nextSibling);
+            const shadowDiv = document.createElement('div');
+            shadowRoot.appendChild(shadowDiv);
+            const root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot)(shadowDiv);
+            root.render(react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_contentScript__WEBPACK_IMPORTED_MODULE_2__["default"], null));
+            console.log('Content Script rendered');
+        });
     }
 });
-//renderContentScript();
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => __awaiter(void 0, void 0, void 0, function* () {
+    //const storage = await chrome.storage.local.get(`violations_${request.tabId}`)
+    if (request.message === 'renderContentScript') {
+        yield renderContentScript();
+        sendResponse({ message: 'Content Script Successfully rendered' });
+    }
+}));
 
 })();
 

@@ -21,6 +21,8 @@ const handleScrollToViolation = (index: number) => {
 }
 
 const Card = ({ violation, index }) => {
+    console.log('violationFromCard:', violation.nodes.map(node => node));
+    console.log('violationFromCard:', violation);
     return (
         <li className='flex justify-between border-b border-gray-600 py-2'>
             <div className='flex items-start'>
@@ -38,12 +40,14 @@ const Card = ({ violation, index }) => {
                     </a>
                 </div>
             </div>
-            <div >
+            <div>
                 <h1 className={`${getImpactColour(violation.impact)} px-2 py-0.5 rounded-md`}>
                     {violation.impact}
                 </h1>
+                <p className='font-bold px-2 py-0.5 rounded-md bg-blue-600 text-white'>
+                        {violation.nodes.length === 1 ? `${violation.nodes.length} - Issue` : `${violation.nodes.length} - Issues`}
+                </p>
             </div>
-            
         </li>
     )
 }

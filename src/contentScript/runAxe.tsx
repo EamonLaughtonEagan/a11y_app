@@ -12,6 +12,7 @@ function runAxe(tabId) {
                     return {
                         ...violation,
                         nodes: violation.nodes.map(node => {
+                            console.log("node.target", node.target);
                             const element = document.querySelector(node.target);
                             element.id = `violation-${index}`;
                             const elementStyles = {

@@ -21,6 +21,7 @@ function runAxe(tabId) {
             else {
                 const violationsWithNodes = results.violations.map((violation, index) => {
                     return Object.assign(Object.assign({}, violation), { nodes: violation.nodes.map(node => {
+                            console.log("node.target", node.target);
                             const element = document.querySelector(node.target);
                             element.id = `violation-${index}`;
                             const elementStyles = {
