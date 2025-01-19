@@ -15,7 +15,9 @@ __webpack_require__.r(__webpack_exports__);
 function runAxe(tabId) {
     return new Promise((resolve, reject) => {
         //@ts-ignore
-        axe.run((err, results) => {
+        axe.run({
+            exclude: [['[id^="violation-"]']], // eclude custom elements added to assess violations
+        }, (err, results) => {
             if (err)
                 reject(err);
             else {
@@ -24,59 +26,58 @@ function runAxe(tabId) {
                             console.log("node.target", node.target);
                             const element = document.querySelector(node.target);
                             element.id = `violation-${index}`;
-                            const elementStyles = {
-                                border: '2px solid purple',
-                                borderRadius: '8px'
-                            };
-                            Object.assign(element.style, elementStyles);
-                            element.classList.add('violation-style-element');
-                            // create label
-                            const label = document.createElement('div');
-                            label.textContent = (index + 1).toString();
-                            const labelStyles = {
-                                position: 'absolute',
-                                color: 'black',
-                                border: '2px solid black',
-                                borderRadius: '8px',
-                                zIndex: '9999',
-                                left: '0'
-                            };
-                            Object.assign(label.style, labelStyles);
-                            label.classList.add('violation-style-label');
-                            element.insertBefore(label, element.firstChild);
-                            // create popup
-                            const popup = document.createElement('div');
-                            popup.textContent = violation.description;
-                            const popupStyles = {
-                                backgroundColor: 'white',
-                                border: '1px solid black',
-                                padding: '5px',
-                                zIndex: '10000',
-                                left: '0',
-                                bottom: '100%', // Position above the label
-                                marginBottom: '20px', // Add some space between label and popup
-                                display: 'none'
-                            };
-                            Object.assign(popup.style, popupStyles);
-                            popup.classList.add('violation-style-popup');
-                            // Show popup on hover
-                            element.addEventListener('mouseenter', () => {
-                                popup.style.display = 'block';
-                            });
-                            element.addEventListener('mouseleave', () => {
-                                popup.style.display = 'none';
-                            });
-                            // insert popup after the label
-                            if (label.nextSibling) {
-                                element.insertBefore(popup, label.nextSibling);
-                            }
-                            else {
-                                element.appendChild(popup);
-                            }
+                            // const elementStyles = {
+                            //     border: '2px solid purple',
+                            //     borderRadius: '8px'
+                            // }
+                            // Object.assign(element.style, elementStyles);
+                            // element.classList.add('violation-style-element');
+                            // // create label
+                            // const label = document.createElement('div');
+                            // label.textContent = (index + 1).toString();
+                            // const labelStyles = {
+                            //     position: 'absolute',
+                            //     color: 'black',
+                            //     border: '2px solid black',
+                            //     borderRadius: '8px',
+                            //     zIndex: '9999',
+                            //     left: '0'
+                            // }
+                            // Object.assign(label.style, labelStyles);
+                            // label.classList.add('violation-style-label');
+                            // element.insertBefore(label, element.firstChild);
+                            // // create popup
+                            // const popup = document.createElement('div');
+                            // popup.textContent = violation.description;
+                            // const popupStyles = {
+                            //     backgroundColor: 'white',
+                            //     border: '1px solid black',
+                            //     padding: '5px',
+                            //     zIndex: '10000',
+                            //     left: '0',
+                            //     bottom: '100%', // Position above the label
+                            //     marginBottom: '20px', // Add some space between label and popup
+                            //     display: 'none'
+                            // }
+                            // Object.assign(popup.style, popupStyles);
+                            // popup.classList.add('violation-style-popup');
+                            // // Show popup on hover
+                            // label.addEventListener('mouseenter', () => {
+                            //     popup.style.display = 'block';
+                            // });
+                            // label.addEventListener('mouseleave', () => {
+                            //     popup.style.display = 'none'; 
+                            // });
+                            // // insert popup after the label
+                            // if (label.nextSibling) {
+                            //     element.insertBefore(popup, label.nextSibling);
+                            // } else {
+                            //     element.appendChild(popup);
+                            // }
                             return node.target;
                         }) });
                 });
-                chrome.storage.local.set({ [`violations_${tabId}`]: violationsWithNodes });
+                //chrome.storage.local.set({ [`violations_${tabId}`]:  violationsWithNodes });
                 resolve(violationsWithNodes);
             }
         });
@@ -156,7 +157,6 @@ __webpack_require__.r(__webpack_exports__);
 chrome.runtime.onInstalled.addListener(() => {
     console.log('background.ts: extension installed');
 });
-const styles = '';
 function clearStyles() {
     const elements = document.querySelectorAll('.violation-style-element');
     elements.forEach((element) => {
@@ -191,32 +191,58 @@ function clearStyles() {
 ;
 const scrollToViolation = (index) => {
     const element = document.getElementById(`violation-${index}`);
-    element.style.border = '2px solid yellow';
+    if (!element)
+        return;
     console.log(`Scrolling to violation ${index}`);
     console.log(element);
+    const flickerBorder = (element, colour1, colour2, duration) => {
+        const border = element.style.border;
+        let flag = true;
+        const interval = setInterval(() => {
+            element.style.border = `2px solid ${flag ? colour1 : colour2}`;
+            flag = !flag;
+        }, 200);
+        setTimeout(() => {
+            clearInterval(interval);
+            element.style.border = border;
+        }, duration);
+    };
     if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        flickerBorder(element, 'red', 'blue', 3000);
     }
     else {
         console.error(`Element with id 'violation-${index}' not found`);
     }
 };
-// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-//     console.log('background.ts: received message', request);
-//     if (request.message === 'buttonClicked') {
-//         chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-//             if (tabs[0].id) {
-//                 const tabId = tabs[0].id;
-//                 // Inject axe-core library
-//                 chrome.scripting.executeScript({
-//                     target: { tabId },
-//                     func: renderContentScript
-//                 })
-//             }
-//         });
-//         return true; // This is required to use sendResponse asynchronously
-//     }
-// });
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.message === 'hoverCard') {
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            if (tabs[0].id) {
+                const tabId = tabs[0].id;
+                if (request.action === 'enter') {
+                    chrome.scripting.executeScript({
+                        target: { tabId },
+                        func: () => {
+                            const element = document.getElementById(`violation-${request.index}`);
+                            element.style.backgroundColor = 'red';
+                        }
+                    });
+                }
+                else if (request.action === 'leave') {
+                    chrome.scripting.executeScript({
+                        target: { tabId },
+                        func: () => {
+                            const element = document.getElementById(`violation-${request.index}`);
+                            element.style.backgroundColor = '';
+                        }
+                    });
+                }
+            }
+        });
+        return true;
+    }
+});
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log('background.ts: received message', request);
     if (request.message === 'buttonClicked') {

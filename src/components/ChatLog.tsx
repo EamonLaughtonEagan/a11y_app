@@ -17,7 +17,7 @@ const ChatLog = ({ chatLog, loading }) => {
                     key={index} 
                     className={`flex flex-col w-full h-min px-2`}
                 >
-                    <div className={`${chat.agent === 'user' ? 'items-end' : 'items-start'} flex flex-col`}>
+                    <div className={`${chat.agent === 'user' ? 'items-end' : 'items-start'} flex flex-col`}> 
                         <div className='text-md px-2 font-mono font-bold'>{chat.agent === 'user' ? '' : 'Assistant'}</div>
                             <div 
                                 className={`${chat.agent === 'user' ? 'bg-blue-100' : 'bg-gray-100'} w-fit p-2 rounded-2xl border border-gray-300 flex flex-col font-mono`}

@@ -30,3 +30,4 @@ chrome.runtime.onMessage.addListener(async(request, sender, sendResponse) => {
     }
 })
 
+export default renderContentScript

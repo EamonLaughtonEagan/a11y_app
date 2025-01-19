@@ -27,17 +27,58 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
 };
 
 const Button = (_a) => {
-    var { onClick, children, className } = _a, props = __rest(_a, ["onClick", "children", "className"]);
-    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", Object.assign({}, props, { onClick: onClick, className: `
-                p-2 
-                rounded-md 
-                border-2 
-                bg-white 
-                border-gray-300 
-                focus:outline-none 
-                focus:border-blue-500 
-                disabled:bg-gray-200
-                ${className} ` }), children));
+    var { onClick, children, className, popup } = _a, props = __rest(_a, ["onClick", "children", "className", "popup"]);
+    const popupRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+    const timeoutRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+    const [popupPosition, setPopupPosition] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('top');
+    const [showPopup, setShowPopup] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+        const checkPopupPosition = () => {
+            if (popupRef.current) {
+                const rect = popupRef.current.getBoundingClientRect();
+                if (rect.top < 0) {
+                    setPopupPosition('bottom');
+                }
+                else {
+                    setPopupPosition('top');
+                }
+            }
+        };
+        checkPopupPosition();
+        window.addEventListener('resize', checkPopupPosition);
+        return () => window.removeEventListener('resize', checkPopupPosition);
+    }, []);
+    const handleMouseEnter = () => {
+        timeoutRef.current = setTimeout(() => {
+            setShowPopup(true);
+        }, 1000);
+    };
+    const handleMouseLeave = () => {
+        clearTimeout(timeoutRef.current);
+        setShowPopup(false);
+    };
+    const handleFocus = () => {
+        setShowPopup(true);
+    };
+    const handleBlur = () => {
+        setShowPopup(false);
+    };
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'relative group', onMouseEnter: handleMouseEnter, onMouseLeave: handleMouseLeave },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", Object.assign({}, props, { onClick: onClick, onFocus: handleFocus, onBlur: handleBlur, className: `
+                    p-2 
+                    rounded-md 
+                    border-2 
+                    border-gray-300 
+                    focus:outline-none 
+                    focus:border-black
+                    disabled:bg-gray-200
+                    shadow-md
+                    disabled:cursor-not-allowed
+                    ${className} ` }), children),
+        (popup && showPopup) && react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { ref: popupRef, className: `absolute ${popupPosition === 'top'
+                ? 'bottom-full mb-2'
+                : 'top-full mt-2'} 
+                hidden group-hover:block bg-black text-white text-xs rounded py-2 px-2` }, popup)));
 };
 
 
@@ -56,6 +97,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _assets_tailwind_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/tailwind.css */ "./src/assets/tailwind.css");
+/* harmony import */ var _Buttons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Buttons */ "./src/components/Buttons.tsx");
+
 
 
 const getImpactColour = (impact) => {
@@ -76,18 +119,30 @@ const handleScrollToViolation = (index) => {
     chrome.runtime.sendMessage({ message: 'scrollToViolation', index: index });
 };
 const Card = ({ violation, index }) => {
-    console.log('violationFromCard:', violation.nodes.map(node => node));
+    const [dropdownVisible, setDropdownVisible] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    console.log('Vilation Nodes:', violation.nodes.map(node => node));
     console.log('violationFromCard:', violation);
-    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: 'flex justify-between border-b border-gray-600 py-2' },
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex items-start' },
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, index + 1),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'px-2' },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", { className: 'font-bold w-fit cursor-pointer', onClick: () => handleScrollToViolation(index) }, violation.description),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, violation.help),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", { className: 'text-blue-400', href: violation.helpUrl, target: '_blank', rel: 'noopener noreferrer' }, violation.helpUrl))),
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", { className: `${getImpactColour(violation.impact)} px-2 py-0.5 rounded-md` }, violation.impact),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", { className: 'font-bold px-2 py-0.5 rounded-md bg-blue-600 text-white' }, violation.nodes.length === 1 ? `${violation.nodes.length} - Issue` : `${violation.nodes.length} - Issues`))));
+    const handleMouseEnter = () => {
+        chrome.runtime.sendMessage({ message: 'hoverCard', action: 'enter', index: index });
+    };
+    const handleMouseLeave = () => {
+        chrome.runtime.sendMessage({ message: 'hoverCard', action: 'leave', index: index });
+    };
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null,
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: 'flex justify-between border rounded-md px-2 shadow-md border-gray-600 py-2' },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex items-start', onMouseEnter: handleMouseEnter, onMouseLeave: handleMouseLeave },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Buttons__WEBPACK_IMPORTED_MODULE_2__.Button, { onClick: () => handleScrollToViolation(index), popup: 'Scroll to violation on the page', className: 'font-bold px-2 py-0.5 rounded-md bg-blue-600 hover:bg-blue-400 text-white' }, index + 1),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'px-2' },
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", { className: 'font-bold w-fit cursor-pointer' }, violation.description),
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, violation.help),
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", { className: 'text-blue-400', href: violation.helpUrl, target: '_blank', rel: 'noopener noreferrer' }, violation.helpUrl),
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", { className: 'space-x-1' }, violation.tags.map((tag, index) => react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", { key: index, className: 'px-1 py-0.5 bg-gray-800 text-white rounded-md' }, tag))))),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex flex-col justify-center items-end max-w-20 min-w-20 space-y-2' },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", { className: `${getImpactColour(violation.impact)} px-2 py-0.5 rounded-md` }, violation.impact),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Buttons__WEBPACK_IMPORTED_MODULE_2__.Button, { className: 'font-bold px-2 py-0.5 rounded-md bg-blue-600 hover:bg-blue-400 text-white', onClick: () => setDropdownVisible(!dropdownVisible), popup: 'List all issues that contribute to this violation' }, violation.nodes.length === 1 ? `${violation.nodes.length} - Issue` : `${violation.nodes.length} - Issues`))),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: `transition-max-height duration-500 ease-in-out overflow-hidden ${dropdownVisible ? 'max-h-96' : 'max-h-0'}` }, violation.nodes.map((node, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { key: index, className: 'flex justify-start align-middle p-2 m-2 space-x-2' },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Buttons__WEBPACK_IMPORTED_MODULE_2__.Button, { className: 'font-bold px-2 py-0.5 rounded-md bg-blue-600 hover:bg-blue-400 text-white' }, index + 1),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'p-1 shadow-md border-gray-600 bg-gray-200 rounded-md' }, node)))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Card);
 
@@ -129,6 +184,65 @@ const ChatLog = ({ chatLog, loading }) => {
 
 /***/ }),
 
+/***/ "./src/components/Header.tsx":
+/*!***********************************!*\
+  !*** ./src/components/Header.tsx ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Buttons__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Buttons */ "./src/components/Buttons.tsx");
+/* harmony import */ var _util_helpText__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/helpText */ "./src/util/helpText.ts");
+
+
+
+const Header = () => {
+    const [helpDropdownVisible, setHelpDropdownVisible] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("header", { className: 'flex flex-col pt-4' },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex justify-between px-4' },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", { className: 'text-2xl font-bold text-center font-mono p-2 bg-amber-500 rounded-lg border-2' }, "Accessibility Assistant"),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Buttons__WEBPACK_IMPORTED_MODULE_1__.Button, { onClick: () => setHelpDropdownVisible(!helpDropdownVisible), className: 'hover:bg-gray-300 bg-white' }, "Help")),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex justify-start px-4' }, helpDropdownVisible &&
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'font-mono' }, _util_helpText__WEBPACK_IMPORTED_MODULE_2__["default"].map((text, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", { key: index, className: 'p-1' },
+                index + 1,
+                ": ",
+                text)))))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Header);
+
+
+/***/ }),
+
+/***/ "./src/components/Spinner.tsx":
+/*!************************************!*\
+  !*** ./src/components/Spinner.tsx ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+const Spinner = (text) => {
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex items-center justify-center space-x-2' },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("svg", { className: 'animate-spin h-5 w-5 text-blue-500', xmlns: 'http://www.w3.org/2000/svg', fill: 'none', viewBox: '0 0 24 24' },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("circle", { className: 'opacity-25', cx: '12', cy: '12', r: '10', stroke: 'currentColor', strokeWidth: '4' }),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", { className: 'opacity-75', fill: 'currentColor', d: 'M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z' })),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", { className: 'text-lg font-medium text-gray-700' }, text.text)));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Spinner);
+
+
+/***/ }),
+
 /***/ "./src/popup/popup.tsx":
 /*!*****************************!*\
   !*** ./src/popup/popup.tsx ***!
@@ -144,6 +258,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _util_formatViolations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../util/formatViolations */ "./src/util/formatViolations.ts");
 /* harmony import */ var _components_ChatLog__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/ChatLog */ "./src/components/ChatLog.tsx");
 /* harmony import */ var _components_Buttons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/Buttons */ "./src/components/Buttons.tsx");
+/* harmony import */ var _components_Spinner__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/Spinner */ "./src/components/Spinner.tsx");
+/* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/Header */ "./src/components/Header.tsx");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -153,6 +269,8 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
+
 
 
 
@@ -301,24 +419,23 @@ const Popup = () => {
         yield updateChatLog(CHAT_URL, message, 'user');
     });
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex flex-col w-full h-screen' },
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("nav", { className: 'fixed top-0 left-0 right-0 flex justify-around items-center p-4 bg-gray-900 text-black shadow-md' },
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex space-x-1' },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: handleGenerateViolationsButtonClick, disabled: generatingViolations, className: 'px-4 bg-gray-400 hover:bg-gray-500 rounded' }, "Regenerate Violations"),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: handleClearViolations, className: 'px-4 bg-gray-400 hover:bg-gray-500 rounded' }, "Clear Violations"),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: getSuggestions, disabled: violations.length === 0, className: 'px-4 bg-gray-500 hover:bg-green-700 rounded' }, "Get Suggestions"),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: handleClearChatLog, className: 'px-4 bg-gray-400 hover:bg-gray-500 rounded' }, "Reset Chat"))),
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'mt-20 mb-4' }, generatingViolations ? react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex items-center justify-center space-x-2' },
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("svg", { className: 'animate-spin h-5 w-5 text-blue-500', xmlns: 'http://www.w3.org/2000/svg', fill: 'none', viewBox: '0 0 24 24' },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("circle", { className: 'opacity-25', cx: '12', cy: '12', r: '10', stroke: 'currentColor', strokeWidth: '4' }),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", { className: 'opacity-75', fill: 'currentColor', d: 'M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z' })),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", { className: 'text-lg font-medium text-gray-700' }, generatingViolationsText)) :
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", { className: 'text-center text-2xl font-bold' }, "Violations"),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: 'px-2' }, violations.map((violation, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Card__WEBPACK_IMPORTED_MODULE_3__["default"], { key: index, violation: violation, index: index })))))),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Header__WEBPACK_IMPORTED_MODULE_8__["default"], null),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'mt-2 mb-2' }, generatingViolations ? react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Spinner__WEBPACK_IMPORTED_MODULE_7__["default"], { text: generatingViolationsText })
+            :
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: 'px-2 space-y-2' }, violations.map((violation, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Card__WEBPACK_IMPORTED_MODULE_3__["default"], { key: index, violation: violation, index: index })))))),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_ChatLog__WEBPACK_IMPORTED_MODULE_5__["default"], { chatLog: chatLog, loading: loading }),
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'sticky bottom-0 left-0 right-0 justify-center items-center flex h-12' },
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", { onSubmit: handleSubmit, className: 'flex justify-center w-full' },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { ref: inputRef, className: '\n                            w-3/4\n                            mx-auto\n                            p-2\n                            rounded-md \n                            border-2 \n                            border-gray-300 \n                            focus:outline-none \n                            focus:border-blue-500\n                            disabled:bg-white\n                            font-size-lg\n                        ', value: input, onChange: (e) => setInput(e.target.value), placeholder: `${loading ? loadingText : 'Talk with your assistant...'}`, disabled: loading })))));
+        loading &&
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'w-full flex justify-start font-semibold text-md px-4 pb-4 font-mono' }, loadingText),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'sticky bottom-0 left-0 right-0 justify-center items-center flex h-12 pb-2 px-4 space-x-1' },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { popup: 'regenerate violations on this page', onClick: handleGenerateViolationsButtonClick, disabled: generatingViolations, className: 'hover:bg-gray-300 bg-white' }, "Generate"),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { popup: 'clear violations on page', onClick: handleClearViolations, className: 'hover:bg-gray-300 bg-white' }, "Clear"),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { popup: 'generates AI suggestions', onClick: getSuggestions, disabled: violations.length === 0, className: 'hover:bg-gray-300 bg-white' }, "Suggestions"),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex justify-end w-full space-x-1' },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: handleSubmit, className: 'hover:bg-gray-300 bg-white' }, "Send"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", { onSubmit: handleSubmit },
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { ref: inputRef, className: '\n                                w-full\n                                mx-auto\n                                p-2\n                                rounded-md \n                                border-2 \n                                border-gray-300 \n                                focus:outline-none \n                                focus:border-blue-500\n                                disabled:bg-white\n                                font-size-lg\n                            ', value: input, onChange: (e) => setInput(e.target.value), placeholder: `${loading ? loadingText : 'chat with assistant...'}`, disabled: loading })),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { popup: 'clear the chat log and AI memory', onClick: handleClearChatLog, className: 'hover:bg-gray-300 bg-white' }, "Reset")))));
 };
 const container = document.createElement('div');
 document.body.appendChild(container);
@@ -342,6 +459,32 @@ const formatViolations = (violations) => {
     return 'Here are the violations I found on the page... ' + violations.map((item, index) => `${index + 1}: ${item.description}`).join(', ');
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (formatViolations);
+
+
+/***/ }),
+
+/***/ "./src/util/helpText.ts":
+/*!******************************!*\
+  !*** ./src/util/helpText.ts ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const helpTextArray = [
+    'Hover over a button for additional information',
+    'Clicking on the index number of a violation from the list will scroll and highlight the page where the violation is present',
+    'Clicking on the issue index button will show each instance relating to a specific violation present on the page',
+    'Generate - generate violations on the current page',
+    'Clear - clear violations on the current page',
+    'Suggestions - generates AI suggestions given the violations present on the page',
+    'Send - sends a message to the AI assistant',
+    'Input - if you would like to chat with the AI assistant, or get additional clarity on a violation, type your message here and press enter',
+    'Reset - clears the chat log and AI memory'
+];
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (helpTextArray);
 
 
 /***/ })

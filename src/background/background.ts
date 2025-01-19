@@ -1,11 +1,12 @@
 
+import renderContentScript from "../contentScript";
 import runAxe from "../contentScript/runAxe";
 
 chrome.runtime.onInstalled.addListener(() => {
     console.log('background.ts: extension installed');
 })
 
-const styles = ''
+
 
 function clearStyles() {
     const elements = document.querySelectorAll('.violation-style-element');
@@ -42,34 +43,59 @@ function clearStyles() {
 
 const scrollToViolation = (index: number) => {
     const element = document.getElementById(`violation-${index}`);
-    element.style.border = '2px solid yellow';
+    if (!element) return;
     console.log(`Scrolling to violation ${index}`);
     console.log(element);
+
+    const flickerBorder = (element: HTMLElement, colour1: string, colour2: string, duration: number) => {
+        const border = element.style.border;
+        let flag = true
+        const interval = setInterval(() => {
+            element.style.border = `2px solid ${flag ? colour1 : colour2}`;
+            flag = !flag;
+        }, 200);
+    
+        setTimeout(() => {
+            clearInterval(interval);
+            element.style.border = border;
+        }, duration);
+    };
+
     if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        flickerBorder(element, 'red', 'blue', 3000);
     } else {
         console.error(`Element with id 'violation-${index}' not found`);
     }
 };
 
-
-
-// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-//     console.log('background.ts: received message', request);
-//     if (request.message === 'buttonClicked') {
-//         chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-//             if (tabs[0].id) {
-//                 const tabId = tabs[0].id;
-//                 // Inject axe-core library
-//                 chrome.scripting.executeScript({
-//                     target: { tabId },
-//                     func: renderContentScript
-//                 })
-//             }
-//         });
-//         return true; // This is required to use sendResponse asynchronously
-//     }
-// });
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.message === 'hoverCard') {
+        chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+            if (tabs[0].id){
+                const tabId = tabs[0].id;
+                if (request.action === 'enter') {
+                    chrome.scripting.executeScript({
+                        target: { tabId },
+                        func: () => {
+                            const element = document.getElementById(`violation-${request.index}`);
+                            element.style.backgroundColor = 'red';
+                        }
+                    })
+                } else if (request.action === 'leave') {
+                    chrome.scripting.executeScript({
+                        target: { tabId },
+                        func: () => {
+                            const element = document.getElementById(`violation-${request.index}`);
+                            element.style.backgroundColor = '';
+                        }
+                    })
+                }
+            }
+        });
+        return true;
+    }
+});
 
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
