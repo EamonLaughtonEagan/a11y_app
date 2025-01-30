@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const PORT = process.env.PORT;
-const API_KEY = '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';
+const API_KEY = process.env.API_KEY;
 const ORG = process.env.ORG;
 
 const initialPrompt = {
