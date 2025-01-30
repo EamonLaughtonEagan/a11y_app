@@ -98,6 +98,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _assets_tailwind_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/tailwind.css */ "./src/assets/tailwind.css");
 /* harmony import */ var _Buttons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Buttons */ "./src/components/Buttons.tsx");
+/* harmony import */ var _popup_popup__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../popup/popup */ "./src/popup/popup.tsx");
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
 
 
 
@@ -119,17 +130,138 @@ const handleScrollToViolation = (index) => {
     chrome.runtime.sendMessage({ message: 'scrollToViolation', index: index });
 };
 const Card = ({ violation, index }) => {
+    const [chat, setChat] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
     const [dropdownVisible, setDropdownVisible] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-    console.log('Vilation Nodes:', violation.nodes.map(node => node));
-    console.log('violationFromCard:', violation);
+    const [isGenerating, setIsGenerating] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    const [generatingText, setGeneratingText] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('Generating');
+    const [input, setInput] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [fix, setFix] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+    const [loading, setIsLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    const inputRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+    const CHAT_URL = `${_popup_popup__WEBPACK_IMPORTED_MODULE_3__.BASE_URL}/chat/${index}`;
     const handleMouseEnter = () => {
         chrome.runtime.sendMessage({ message: 'hoverCard', action: 'enter', index: index });
     };
     const handleMouseLeave = () => {
         chrome.runtime.sendMessage({ message: 'hoverCard', action: 'leave', index: index });
     };
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+        const interval = setInterval(() => {
+            if (isGenerating) {
+                setGeneratingText((prevText) => {
+                    if (prevText === 'Generating...')
+                        return 'Generating';
+                    else if (prevText === 'Generating')
+                        return 'Generating.';
+                    else if (prevText === 'Generating.')
+                        return 'Generating..';
+                    else if (prevText === 'Generating..')
+                        return 'Generating...';
+                });
+            }
+        }, 200);
+        return () => clearInterval(interval);
+    }, [isGenerating]);
+    const handleSingleViolationFix = (index, violationDescription) => __awaiter(void 0, void 0, void 0, function* () {
+        setIsGenerating(true);
+        const response = yield fetch(`${_popup_popup__WEBPACK_IMPORTED_MODULE_3__.BASE_URL}/solutions/${index}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ description: violationDescription })
+        });
+        const data = yield response.json();
+        const parsedData = JSON.parse(data.message);
+        setFix(parsedData.violation);
+        setIsGenerating(false);
+    });
+    //save the fix to local storage and access it in the popup when its opened
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            chrome.storage.local.get([`fix-${tabId}-${index}`], function (result) {
+                setFix(result[`fix-${tabId}-${index}`]);
+            });
+        });
+    }, []);
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+        // create a local storage variable for the fix when the data is fetched
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            console.log(`fix-${tabId}-${index}: `, fix);
+            chrome.storage.local.set({ [`fix-${tabId}-${index}`]: fix });
+        });
+        // save the chat log to local storage and access it in the popup when its opened and a fix exists
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            const storageKey = `chatLog_${tabId}-${index}`;
+            chrome.storage.local.get([storageKey], function (result) {
+                if (result[storageKey] !== undefined) {
+                    setChat(result[storageKey]);
+                }
+                else {
+                    console.log(`${storageKey} not found in local storage`);
+                }
+            });
+        });
+    }, [fix]);
+    const updateChatLog = (url, message, agent) => __awaiter(void 0, void 0, void 0, function* () {
+        setIsLoading(true);
+        const newChatLog = [...chat, { message, agent }];
+        setChat(newChatLog);
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            chrome.storage.local.set({ [`chatLog_${tabId}-${index}`]: newChatLog });
+        });
+        const response = yield fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                chat: newChatLog
+            })
+        });
+        const data = yield response.json();
+        const updatedChatLog = [...newChatLog, { message: data.message, agent: 'agent' }];
+        setChat(updatedChatLog);
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            chrome.storage.local.set({ [`chatLog_${tabId}-${index}`]: updatedChatLog });
+        });
+        setIsLoading(false);
+    });
+    const handleClearFix = () => {
+        setFix(null);
+        setChat([]);
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            chrome.storage.local.remove([`fix-${tabId}-${index}`]);
+        });
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            chrome.storage.local.remove([`chatLog_${tabId}-${index}`]);
+        });
+    };
+    const handleClearChatLog = () => {
+        setChat([]);
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            chrome.storage.local.set({ [`chatLog_${tabId}-${index}`]: [] });
+        });
+    };
+    const handleSubmit = (e) => __awaiter(void 0, void 0, void 0, function* () {
+        e.preventDefault();
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+        const message = input.trim();
+        setInput('');
+        yield updateChatLog(CHAT_URL, message, 'user');
+    });
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null,
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: 'flex justify-between border rounded-md px-2 shadow-md border-gray-600 py-2' },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: 'flex justify-between rounded-md px-2 shadow-md border-gray-600 bg-slate-200 hover:bg-slate-100 py-2' },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex items-start', onMouseEnter: handleMouseEnter, onMouseLeave: handleMouseLeave },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Buttons__WEBPACK_IMPORTED_MODULE_2__.Button, { onClick: () => handleScrollToViolation(index), popup: 'Scroll to violation on the page', className: 'font-bold px-2 py-0.5 rounded-md bg-blue-600 hover:bg-blue-400 text-white' }, index + 1),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'px-2' },
@@ -139,7 +271,23 @@ const Card = ({ violation, index }) => {
                     react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", { className: 'space-x-1' }, violation.tags.map((tag, index) => react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", { key: index, className: 'px-1 py-0.5 bg-gray-800 text-white rounded-md' }, tag))))),
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex flex-col justify-center items-end max-w-20 min-w-20 space-y-2' },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", { className: `${getImpactColour(violation.impact)} px-2 py-0.5 rounded-md` }, violation.impact),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Buttons__WEBPACK_IMPORTED_MODULE_2__.Button, { className: 'font-bold px-2 py-0.5 rounded-md bg-blue-600 hover:bg-blue-400 text-white', onClick: () => setDropdownVisible(!dropdownVisible), popup: 'List all issues that contribute to this violation' }, violation.nodes.length === 1 ? `${violation.nodes.length} - Issue` : `${violation.nodes.length} - Issues`))),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Buttons__WEBPACK_IMPORTED_MODULE_2__.Button, { className: 'font-bold px-2 py-0.5 rounded-md bg-blue-600 hover:bg-blue-400 text-white', onClick: () => setDropdownVisible(!dropdownVisible), popup: 'List all issues that contribute to this violation' }, violation.nodes.length === 1 ? `${violation.nodes.length} - Issue` : `${violation.nodes.length} - Issues`),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Buttons__WEBPACK_IMPORTED_MODULE_2__.Button, { className: 'font-bold px-2 py-0.5 rounded-md bg-green-600 hover:bg-green-400 text-white', onClick: () => handleSingleViolationFix(index, violation.description), popup: 'generates a potential solution for this violation' }, "Resolve"))),
+        isGenerating && react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex p-2 font-mono text-xl' }, generatingText),
+        fix && !isGenerating &&
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex flex-col justify-center items-start p-2 mx-2 rounded-md shadow-md border-gray-600 bg-slate-200 hover:bg-slate-100 space-y-1' },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex justify-around space-x-2' },
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'font-medium' }, fix[0].solution),
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Buttons__WEBPACK_IMPORTED_MODULE_2__.Button, { className: 'font-bold px-2 py-0.5 rounded-md bg-red-600 hover:bg-red-400 text-white', onClick: () => handleClearFix() }, "x")),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'font-mono' }, fix[0].example),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex justify-between w-full h-20' },
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", { onSubmit: handleSubmit },
+                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { ref: inputRef, className: '\n                            p-2\n                            rounded-md \n                            border-2 \n                            border-gray-300 \n                            focus:outline-none \n                            focus:border-blue-500\n                            disabled:bg-white\n                            font-size-sm\n                        ', placeholder: loading ? `Fetching response...` : `For more information...`, value: input, onChange: (e) => setInput(e.target.value), disabled: isGenerating })),
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Buttons__WEBPACK_IMPORTED_MODULE_2__.Button, { popup: 'clear the chat log and AI memory', onClick: handleClearChatLog, className: 'hover:bg-gray-400 hover:text-white bg-white' }, "Reset")),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, chat.map((item, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { key: index, className: `flex flex-col ${item.agent === 'user' ? 'items-start' : 'items-end'} ` },
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'w-1/2' },
+                        item.agent !== 'user' && react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'text-md font-bold font-mono' }, "Assistant"),
+                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: `w-fit ${item.agent === 'user' ? 'bg-blue-100' : 'bg-gray-100'} p-2 rounded-2xl border border-gray-300 font-mono` }, item.message))))))),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: `transition-max-height duration-500 ease-in-out overflow-hidden ${dropdownVisible ? 'max-h-96' : 'max-h-0'}` }, violation.nodes.map((node, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { key: index, className: 'flex justify-start align-middle p-2 m-2 space-x-2' },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Buttons__WEBPACK_IMPORTED_MODULE_2__.Button, { className: 'font-bold px-2 py-0.5 rounded-md bg-blue-600 hover:bg-blue-400 text-white' }, index + 1),
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'p-1 shadow-md border-gray-600 bg-gray-200 rounded-md' }, node)))))));
@@ -203,15 +351,12 @@ __webpack_require__.r(__webpack_exports__);
 
 const Header = () => {
     const [helpDropdownVisible, setHelpDropdownVisible] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("header", { className: 'flex flex-col pt-4' },
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex justify-between px-4' },
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", { className: 'text-2xl font-bold text-center font-mono p-2 bg-amber-500 rounded-lg border-2' }, "Accessibility Assistant"),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Buttons__WEBPACK_IMPORTED_MODULE_1__.Button, { onClick: () => setHelpDropdownVisible(!helpDropdownVisible), className: 'hover:bg-gray-300 bg-white' }, "Help")),
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex justify-start px-4' }, helpDropdownVisible &&
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'font-mono' }, _util_helpText__WEBPACK_IMPORTED_MODULE_2__["default"].map((text, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", { key: index, className: 'p-1' },
-                index + 1,
-                ": ",
-                text)))))));
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("header", { className: 'flex flex-col bg-gray-300 p-2 space-y-2 shadow-lg rounded-lg border' },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex justify-between' },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", { className: 'text-2xl font-bold text-center font-mono py-2 px-4 bg-blue-600 text-white rounded-lg border-2' }, "Accessibility Assistant"),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Buttons__WEBPACK_IMPORTED_MODULE_1__.Button, { onClick: () => setHelpDropdownVisible(!helpDropdownVisible), className: 'hover:bg-gray-400 hover:text-white bg-white' }, "Help")),
+        helpDropdownVisible && react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex justify-start px-4 pt-2 bg-white rounded-lg border' },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'font-mono' }, _util_helpText__WEBPACK_IMPORTED_MODULE_2__["default"].map((text, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", { key: index, className: 'py-1 pl-1' }, text)))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Header);
 
@@ -243,6 +388,45 @@ const Spinner = (text) => {
 
 /***/ }),
 
+/***/ "./src/components/Suggestions.tsx":
+/*!****************************************!*\
+  !*** ./src/components/Suggestions.tsx ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+const Suggestions = ({ response, setResponse }) => {
+    // save the suggestions to local storage
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            chrome.storage.local.set({ [`allResponses-${tabId}`]: response });
+        });
+    }, [response]);
+    // gets the suggestions from local storage if they exist and the page is refreshed
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            const tabId = tabs[0].id;
+            chrome.storage.local.get([`allResponses-${tabId}`], function (result) {
+                setResponse(result[`allResponses-${tabId}`]);
+            });
+        });
+    }, []);
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: 'flex flex-col p-2 space-x-1' }, response.map((item, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { key: index, className: 'bg-gray-100 rounded-md border-gray-300 border px-4 py-1 font-mono' },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'pb-1' }, item.violation),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, item.solution))))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Suggestions);
+
+
+/***/ }),
+
 /***/ "./src/popup/popup.tsx":
 /*!*****************************!*\
   !*** ./src/popup/popup.tsx ***!
@@ -250,6 +434,9 @@ const Spinner = (text) => {
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BASE_URL: () => (/* binding */ BASE_URL)
+/* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
@@ -260,6 +447,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Buttons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/Buttons */ "./src/components/Buttons.tsx");
 /* harmony import */ var _components_Spinner__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/Spinner */ "./src/components/Spinner.tsx");
 /* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/Header */ "./src/components/Header.tsx");
+/* harmony import */ var _components_Suggestions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../components/Suggestions */ "./src/components/Suggestions.tsx");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -278,18 +466,24 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
+
 //TODO: Change this to the server's URL
-const BASE_URL = 'http://172.105.106.240';
+const BASE_URL = 'http://localhost:5000';
 const VIOLATION_URL = `${BASE_URL}/violations`;
 const CHAT_URL = `${BASE_URL}/chat`;
+const HELP_URL = `${BASE_URL}/help`;
 const Popup = () => {
     const [violations, setViolations] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
     const [chatLog, setChatLog] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+    const [response, setResponse] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
     const [input, setInput] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
     const inputRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
     // generating violations logic
     const [generatingViolations, setGeneratingViolations] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
     const [generatingViolationsText, setGeneratingViolationsText] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('Generating Violations');
+    // generating suggestions logic
+    const [GeneratingSuggestions, setGeneratingSuggestions] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    const [GeneratingSuggestionsText, setGeneratingSuggestionsText] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('Generating');
     // Loading Logic
     const [loading, setLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
     const [loadingText, setLoadingText] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('Loading');
@@ -319,9 +513,21 @@ const Popup = () => {
                         return 'Generating Violations...';
                 });
             }
+            if (GeneratingSuggestions) {
+                setGeneratingSuggestionsText((prevText) => {
+                    if (prevText === 'Generating...')
+                        return 'Generating';
+                    else if (prevText === 'Generating')
+                        return 'Generating.';
+                    else if (prevText === 'Generating.')
+                        return 'Generating..';
+                    else if (prevText === 'Generating..')
+                        return 'Generating...';
+                });
+            }
         }, 200);
         return () => clearInterval(interval);
-    }, [loading, generatingViolations]);
+    }, [loading, generatingViolations, GeneratingSuggestions]);
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
         chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
             const tabId = tabs[0].id;
@@ -348,7 +554,6 @@ const Popup = () => {
         setGeneratingViolations(true);
         let response = yield chrome.runtime.sendMessage({ message: 'buttonClicked' });
         setGeneratingViolations(false);
-        console.log("Violations from background.ts: ", response.violations);
         setViolations(response.violations);
         chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
             chrome.storage.local.set({ [`violations_${tabId}`]: response.violations,
@@ -390,6 +595,25 @@ const Popup = () => {
         });
         setLoading(false);
     });
+    //testing out new way to render suggestion from AI 
+    const getHelp = (url) => __awaiter(void 0, void 0, void 0, function* () {
+        setGeneratingSuggestions(true);
+        const response = yield fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                violations: violations,
+                descriptions: violations.map((violation) => violation.description).join(', '),
+                help: violations.map((violation) => violation.help)
+            })
+        });
+        const data = yield response.json();
+        const parsedData = JSON.parse(data.message);
+        setResponse(parsedData.violations);
+        setGeneratingSuggestions(false);
+    });
     const handleClearChatLog = () => {
         setChatLog([]);
         chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
@@ -418,7 +642,7 @@ const Popup = () => {
         setInput('');
         yield updateChatLog(CHAT_URL, message, 'user');
     });
-    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex flex-col w-full h-screen' },
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex flex-col w-full h-full ' },
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Header__WEBPACK_IMPORTED_MODULE_8__["default"], null),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'mt-2 mb-2' }, generatingViolations ? react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Spinner__WEBPACK_IMPORTED_MODULE_7__["default"], { text: generatingViolationsText })
             :
@@ -427,15 +651,16 @@ const Popup = () => {
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_ChatLog__WEBPACK_IMPORTED_MODULE_5__["default"], { chatLog: chatLog, loading: loading }),
         loading &&
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'w-full flex justify-start font-semibold text-md px-4 pb-4 font-mono' }, loadingText),
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'sticky bottom-0 left-0 right-0 justify-center items-center flex h-12 pb-2 px-4 space-x-1' },
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { popup: 'regenerate violations on this page', onClick: handleGenerateViolationsButtonClick, disabled: generatingViolations, className: 'hover:bg-gray-300 bg-white' }, "Generate"),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { popup: 'clear violations on page', onClick: handleClearViolations, className: 'hover:bg-gray-300 bg-white' }, "Clear"),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { popup: 'generates AI suggestions', onClick: getSuggestions, disabled: violations.length === 0, className: 'hover:bg-gray-300 bg-white' }, "Suggestions"),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Suggestions__WEBPACK_IMPORTED_MODULE_9__["default"], { response: response, setResponse: setResponse }),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'sticky bottom-0 left-0 right-0 justify-center items-center flex h-12 py-2 px-4 space-x-1 bg-gray-300 border shadow-lg rounded-lg' },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { popup: 'regenerate violations on this page', onClick: handleGenerateViolationsButtonClick, disabled: generatingViolations, className: 'hover:bg-gray-400 hover:text-white bg-white' }, "Generate"),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { popup: 'clear violations on page', onClick: handleClearViolations, className: 'hover:bg-gray-400 hover:text-white bg-white' }, "Clear"),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { popup: 'generates AI suggestions for all violations', onClick: () => getHelp(HELP_URL), disabled: violations.length === 0 || GeneratingSuggestions, className: 'hover:bg-gray-400 hover:text-white bg-white' }, GeneratingSuggestions ? GeneratingSuggestionsText : 'Suggestions'),
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: 'flex justify-end w-full space-x-1' },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: handleSubmit, className: 'hover:bg-gray-300 bg-white' }, "Send"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { onClick: handleSubmit, className: 'hover:bg-gray-400 hover:text-white bg-white' }, "Send"),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", { onSubmit: handleSubmit },
                     react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { ref: inputRef, className: '\n                                w-full\n                                mx-auto\n                                p-2\n                                rounded-md \n                                border-2 \n                                border-gray-300 \n                                focus:outline-none \n                                focus:border-blue-500\n                                disabled:bg-white\n                                font-size-lg\n                            ', value: input, onChange: (e) => setInput(e.target.value), placeholder: `${loading ? loadingText : 'chat with assistant...'}`, disabled: loading })),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { popup: 'clear the chat log and AI memory', onClick: handleClearChatLog, className: 'hover:bg-gray-300 bg-white' }, "Reset")))));
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_6__.Button, { popup: 'clear the chat log and AI memory', onClick: handleClearChatLog, className: 'hover:bg-gray-400 hover:text-white bg-white' }, "Reset")))));
 };
 const container = document.createElement('div');
 document.body.appendChild(container);
@@ -477,12 +702,12 @@ const helpTextArray = [
     'Hover over a button for additional information',
     'Clicking on the index number of a violation from the list will scroll and highlight the page where the violation is present',
     'Clicking on the issue index button will show each instance relating to a specific violation present on the page',
-    'Generate - generate violations on the current page',
-    'Clear - clear violations on the current page',
-    'Suggestions - generates AI suggestions given the violations present on the page',
-    'Send - sends a message to the AI assistant',
-    'Input - if you would like to chat with the AI assistant, or get additional clarity on a violation, type your message here and press enter',
-    'Reset - clears the chat log and AI memory'
+    'Generate: generate violations on the current page',
+    'Clear: clear violations on the current page',
+    'Suggestions: generates AI suggestions given the violations present on the page',
+    'Send: sends a message to the AI assistant',
+    'Input: if you would like to chat with the AI assistant, or get additional clarity on a violation, type your message here and press enter',
+    'Reset: clears the chat log and AI memory'
 ];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (helpTextArray);
 

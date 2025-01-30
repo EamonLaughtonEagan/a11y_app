@@ -7,20 +7,21 @@ import ChatLog from '../components/ChatLog'
 import { Button } from '../components/Buttons'
 import Spinner from '../components/Spinner'
 import Header from '../components/Header'
+import { chatLog, solution } from '../static/types'
+import Suggestions from '../components/Suggestions'
 
 //TODO: Change this to the server's URL
-const BASE_URL = 'http://172.105.106.240'
+export const BASE_URL =  'http://localhost:5000'
+
+
 const VIOLATION_URL = `${BASE_URL}/violations`
 const CHAT_URL = `${BASE_URL}/chat`
-
-type chatLog = {
-    message: string,
-    agent: string
-}
+const HELP_URL = `${BASE_URL}/help`
 
 const Popup = () => {
     const [violations, setViolations] = useState([])
     const [chatLog, setChatLog] = useState<chatLog[]>([])
+    const [response, setResponse] = useState<solution[]>([])
     const [input, setInput] = useState('')
 
     const inputRef = useRef(null)
@@ -28,6 +29,10 @@ const Popup = () => {
     // generating violations logic
     const [generatingViolations, setGeneratingViolations] = useState(false)
     const [generatingViolationsText, setGeneratingViolationsText] = useState('Generating Violations')
+
+    // generating suggestions logic
+    const [GeneratingSuggestions, setGeneratingSuggestions] = useState(false)
+    const [GeneratingSuggestionsText, setGeneratingSuggestionsText] = useState('Generating')
 
     // Loading Logic
     const [loading, setLoading] = useState(false)
@@ -51,9 +56,17 @@ const Popup = () => {
                     else if (prevText === 'Generating Violations..') return 'Generating Violations...'
                 })
             }
+            if (GeneratingSuggestions) {
+                setGeneratingSuggestionsText((prevText) => {
+                    if (prevText === 'Generating...') return 'Generating'
+                    else if (prevText === 'Generating') return 'Generating.'
+                    else if (prevText === 'Generating.') return 'Generating..'
+                    else if (prevText === 'Generating..') return 'Generating...'
+                })
+            }
         }, 200)
         return () => clearInterval(interval)
-    }, [loading, generatingViolations])
+    }, [loading, generatingViolations, GeneratingSuggestions])
 
     useEffect(() => {
         chrome.tabs.query({active: true, currentWindow: true}, tabs => {
@@ -85,7 +98,6 @@ const Popup = () => {
         setGeneratingViolations(true)
         let response = await chrome.runtime.sendMessage({ message: 'buttonClicked' })
         setGeneratingViolations(false)
-        console.log("Violations from background.ts: ", response.violations)
         setViolations(response.violations)
         chrome.tabs.query({active: true, currentWindow: true}, tabs => {
             chrome.storage.local.set({ [`violations_${tabId}`]: response.violations, 
@@ -131,6 +143,26 @@ const Popup = () => {
         setLoading(false)
     }
 
+    //testing out new way to render suggestion from AI 
+    const getHelp = async (url: string) => {
+        setGeneratingSuggestions(true)
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify({
+                violations: violations,
+                descriptions: violations.map((violation) => violation.description).join(', '),
+                help: violations.map((violation) => violation.help)
+            })
+        })
+        const data = await response.json()
+        const parsedData = JSON.parse(data.message)
+        setResponse(parsedData.violations)
+        setGeneratingSuggestions(false)
+    }
+
     const handleClearChatLog = () => {
         setChatLog([])
         chrome.tabs.query({active: true, currentWindow: true}, tabs => {
@@ -164,7 +196,7 @@ const Popup = () => {
     }
 
     return (
-        <div className='flex flex-col w-full h-screen'>
+        <div className='flex flex-col w-full h-full '>
             <Header />
             <div className='mt-2 mb-2'>
                 {generatingViolations ? <Spinner text={generatingViolationsText}/> 
@@ -183,34 +215,35 @@ const Popup = () => {
                     {loadingText}
                 </div>
             }
-            <div className='sticky bottom-0 left-0 right-0 justify-center items-center flex h-12 pb-2 px-4 space-x-1'>
+            <Suggestions response={response} setResponse={setResponse} />
+            <div className='sticky bottom-0 left-0 right-0 justify-center items-center flex h-12 py-2 px-4 space-x-1 bg-gray-300 border shadow-lg rounded-lg'>
                     <Button 
                         popup='regenerate violations on this page' 
                         onClick={handleGenerateViolationsButtonClick} 
                         disabled={generatingViolations}
-                        className='hover:bg-gray-300 bg-white'
+                        className='hover:bg-gray-400 hover:text-white bg-white'
                     >
                         Generate
                     </Button>
                     <Button 
                         popup='clear violations on page' 
                         onClick={handleClearViolations}
-                        className='hover:bg-gray-300 bg-white'
+                        className='hover:bg-gray-400 hover:text-white bg-white'
                     >
                         Clear
                     </Button>
                     <Button 
-                        popup='generates AI suggestions' 
-                        onClick={getSuggestions} 
-                        disabled={violations.length === 0}
-                        className='hover:bg-gray-300 bg-white'
+                        popup='generates AI suggestions for all violations' 
+                        onClick={() => getHelp(HELP_URL)}
+                        disabled={violations.length === 0 || GeneratingSuggestions}
+                        className='hover:bg-gray-400 hover:text-white bg-white'
                     >
-                        Suggestions
+                        {GeneratingSuggestions ? GeneratingSuggestionsText : 'Suggestions'}
                     </Button>
                 <div className='flex justify-end w-full space-x-1'>
                     <Button 
                         onClick={handleSubmit}
-                        className='hover:bg-gray-300 bg-white'
+                        className='hover:bg-gray-400 hover:text-white bg-white'
                     >
                         Send
                     </Button>
@@ -239,7 +272,7 @@ const Popup = () => {
                     <Button 
                         popup='clear the chat log and AI memory' 
                         onClick={handleClearChatLog}
-                        className='hover:bg-gray-300 bg-white'
+                        className='hover:bg-gray-400 hover:text-white bg-white'
                     >
                         Reset
                     </Button>
