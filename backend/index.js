@@ -75,9 +75,14 @@ app.post('/chat', async (req, res) => {
                     role: 'user',
                     content: log.message
                 })
-            } else {
+            } else if (log.agent === 'assistant') {
                 messages.push({
                     role: 'assistant',
+                    content: log.message
+                })
+            } else {
+                messages.push({
+                    role: 'system',
                     content: log.message
                 })
             }
@@ -96,7 +101,6 @@ app.post('/chat', async (req, res) => {
 
 app.post('/chat/:index', async (req, res) => {
     
-    //TODO: Implement this route
     console.log('from /chat:/index', req.body);
     const chat = req.body.chat;
     let messages = [initialPrompt];

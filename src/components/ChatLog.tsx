@@ -11,6 +11,7 @@ const ChatLog = ({ chatLog, loading }) => {
     }, [chatLog])
 
     return (
+        <>
         <ul className={`space-y-4`}>
             {chatLog.map((chat: { agent: string; message: string; }, index: React.Key) => (
                 <li 
@@ -18,7 +19,7 @@ const ChatLog = ({ chatLog, loading }) => {
                     className={`flex flex-col w-full h-min px-2`}
                 >
                     <div className={`${chat.agent === 'user' ? 'items-end' : 'items-start'} flex flex-col`}> 
-                        <div className='text-md px-2 font-mono font-bold'>{chat.agent === 'user' ? '' : 'Assistant'}</div>
+                        <div className='text-md px-2 font-mono font-bold'>{chat.agent === 'user' ? '' : chat.agent === 'agent' ? 'Assistant' : ''}</div>
                             <div 
                                 className={`${chat.agent === 'user' ? 'bg-blue-100' : 'bg-gray-100'} w-fit p-2 rounded-2xl border border-gray-300 flex flex-col font-mono`}
                             >
@@ -30,6 +31,7 @@ const ChatLog = ({ chatLog, loading }) => {
             ))}
             <div ref={messagesEndRef} />
         </ul>
+        </>
     )
 }
 

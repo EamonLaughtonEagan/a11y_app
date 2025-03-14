@@ -8,11 +8,10 @@ import { Button } from '../components/Buttons'
 import Spinner from '../components/Spinner'
 import Header from '../components/Header'
 import { chatLog, solution } from '../static/types'
-import Suggestions from '../components/Suggestions'
 
 //TODO: Change this to the server's URL
-export const BASE_URL =  'http://localhost:5000'
-
+export const BASE_URL =  'http://172.105.106.240'
+//export const BASE_URL = 'http://localhost:5000'
 
 const VIOLATION_URL = `${BASE_URL}/violations`
 const CHAT_URL = `${BASE_URL}/chat`
@@ -21,7 +20,7 @@ const HELP_URL = `${BASE_URL}/help`
 const Popup = () => {
     const [violations, setViolations] = useState([])
     const [chatLog, setChatLog] = useState<chatLog[]>([])
-    const [response, setResponse] = useState<solution[]>([])
+    //const [response, setResponse] = useState<solution[]>([])
     const [input, setInput] = useState('')
 
     const inputRef = useRef(null)
@@ -33,6 +32,7 @@ const Popup = () => {
     // generating suggestions logic
     const [GeneratingSuggestions, setGeneratingSuggestions] = useState(false)
     const [GeneratingSuggestionsText, setGeneratingSuggestionsText] = useState('Generating')
+    const [violationsGenerated, setViolationsGenerated] = useState(false);
 
     // Loading Logic
     const [loading, setLoading] = useState(false)
@@ -82,6 +82,43 @@ const Popup = () => {
     }, [])
 
     useEffect(() => {
+        if (violationsGenerated) {
+        const fetchViolations = async (url: string) => {
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        descriptions: violations.map((violation) => violation.description).join(', '),
+                    })
+                });
+                const data = await response.json();
+                const initialChatLog = JSON.parse(data.message).violations.map((violation, index) => ({
+                    message: `violation ${index+1}: ${violation.solution}`,
+                    agent: 'system'
+                }));
+                setChatLog(initialChatLog);
+                chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+                    const tabId = tabs[0].id;
+                    chrome.storage.local.set({ [`chatLog_${tabId}`]: initialChatLog });
+                });
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching violations:', error);
+                setLoading(false);
+            }
+        };
+        fetchViolations(HELP_URL);
+    } else {
+        return
+    }
+
+        
+    }, [violationsGenerated]);
+
+    useEffect(() => {
         chrome.runtime.sendMessage({ message: 'renderContentScript' });
     }, [])
 
@@ -103,6 +140,8 @@ const Popup = () => {
             chrome.storage.local.set({ [`violations_${tabId}`]: response.violations, 
             [`violationsGenerated_${tabId}`]: true });
         })
+        setViolationsGenerated(true)
+
     }
 
     const handleClearViolations = () => {
@@ -141,11 +180,11 @@ const Popup = () => {
             chrome.storage.local.set({ [`chatLog_${tabId}`]: updatedChatLog })
         })
         setLoading(false)
+        console.log(chatLog)
     }
 
     //testing out new way to render suggestion from AI 
     const getHelp = async (url: string) => {
-        setGeneratingSuggestions(true)
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -159,8 +198,10 @@ const Popup = () => {
         })
         const data = await response.json()
         const parsedData = JSON.parse(data.message)
-        setResponse(parsedData.violations)
-        setGeneratingSuggestions(false)
+        const stringData = data.message
+        //setChatLog([...chatLog, { message: stringData, agent: 'initialization' }])
+        //console.log('parsedData: ', parsedData)
+        //console.log('stringData: ', stringData)
     }
 
     const handleClearChatLog = () => {
@@ -215,8 +256,7 @@ const Popup = () => {
                     {loadingText}
                 </div>
             }
-            <Suggestions response={response} setResponse={setResponse} />
-            <div className='sticky bottom-0 left-0 right-0 justify-center items-center flex h-12 py-2 px-4 space-x-1 bg-gray-300 border shadow-lg rounded-lg'>
+            <div className='sticky bottom-0 left-0 right-0 justify-start items-center flex h-12 py-2 px-4 space-x-1 bg-gray-300 border shadow-lg rounded-lg'>
                     <Button 
                         popup='regenerate violations on this page' 
                         onClick={handleGenerateViolationsButtonClick} 
@@ -232,51 +272,43 @@ const Popup = () => {
                     >
                         Clear
                     </Button>
-                    <Button 
-                        popup='generates AI suggestions for all violations' 
-                        onClick={() => getHelp(HELP_URL)}
-                        disabled={violations.length === 0 || GeneratingSuggestions}
-                        className='hover:bg-gray-400 hover:text-white bg-white'
+            <div className='flex justify-end w-full space-x-1'>
+                <Button 
+                    onClick={handleSubmit}
+                    className='hover:bg-gray-400 hover:text-white bg-white'
+                >
+                    Send
+                </Button>
+                <form onSubmit={handleSubmit} >
+                    <input
+                        ref={inputRef}
+                        className='
+                            w-full
+                            mx-auto
+                            p-2
+                            rounded-md 
+                            border-2 
+                            border-gray-300 
+                            focus:outline-none 
+                            focus:border-blue-500
+                            disabled:bg-white
+                            font-size-lg
+                        '
+                        value={input} 
+                        onChange={(e) => setInput(e.target.value)} 
+                        placeholder={`${loading ? loadingText : 'chat with assistant...'}`}
+                        disabled={loading}
                     >
-                        {GeneratingSuggestions ? GeneratingSuggestionsText : 'Suggestions'}
-                    </Button>
-                <div className='flex justify-end w-full space-x-1'>
-                    <Button 
-                        onClick={handleSubmit}
-                        className='hover:bg-gray-400 hover:text-white bg-white'
-                    >
-                        Send
-                    </Button>
-                    <form onSubmit={handleSubmit} >
-                        <input
-                            ref={inputRef}
-                            className='
-                                w-full
-                                mx-auto
-                                p-2
-                                rounded-md 
-                                border-2 
-                                border-gray-300 
-                                focus:outline-none 
-                                focus:border-blue-500
-                                disabled:bg-white
-                                font-size-lg
-                            '
-                            value={input} 
-                            onChange={(e) => setInput(e.target.value)} 
-                            placeholder={`${loading ? loadingText : 'chat with assistant...'}`}
-                            disabled={loading}
-                        >
-                        </input>
-                    </form>
-                    <Button 
-                        popup='clear the chat log and AI memory' 
-                        onClick={handleClearChatLog}
-                        className='hover:bg-gray-400 hover:text-white bg-white'
-                    >
-                        Reset
-                    </Button>
-                </div>
+                    </input>
+                </form>
+                <Button 
+                    popup='clear the chat log and AI memory' 
+                    onClick={handleClearChatLog}
+                    className='hover:bg-gray-400 hover:text-white bg-white'
+                >
+                    Reset
+                </Button>
+            </div>
             </div>
         </div>
     )
