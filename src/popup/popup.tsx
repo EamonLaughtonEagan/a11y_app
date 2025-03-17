@@ -10,8 +10,8 @@ import Header from '../components/Header'
 import { chatLog, solution } from '../static/types'
 
 //TODO: Change this to the server's URL
-export const BASE_URL =  'http://172.105.106.240'
-//export const BASE_URL = 'http://localhost:5000'
+// export const BASE_URL =  'http://172.105.106.240'
+export const BASE_URL = 'http://localhost:5000'
 
 const VIOLATION_URL = `${BASE_URL}/violations`
 const CHAT_URL = `${BASE_URL}/chat`
